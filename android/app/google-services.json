@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "337780887359",
+    "project_id": "hapii-59f0f",
+    "storage_bucket": "hapii-59f0f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:337780887359:android:016213566cee0bdf56cd8a",
+        "android_client_info": {
+          "package_name": "io.hapii.hapii"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "337780887359-v5ho1j8nndisgmt4a8m4iun29tall926.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.hapii.hapii",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "337780887359-anrj9dmk06qhv649pct4bkadpsj7ee4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRL08ftSbktcFZHt0kJcAevf7kzFcVxHk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "337780887359-anrj9dmk06qhv649pct4bkadpsj7ee4g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
