@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:hapii/screens/homescreen.dart';
+import 'package:hapii/screens/loginscreen.dart';
+import 'package:hapii/services/auth.dart';
+import 'package:provider/provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,14 +17,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      //home: NavScreen(),
-      home: Scaffold(
-          appBar: AppBar(
-            title: const Text('card'),
-          ),
-          body: Placeholder()),
+    return ChangeNotifierProvider(
+      create: (context) => GoogleSignInProvider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: NavScreen(),
+      ),
     );
   }
 }
@@ -29,6 +32,13 @@ class NavScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          return snapshot.hasData ? HomeScreen() : LoginScreen();
+        },
+      ),
+    );
   }
 }
