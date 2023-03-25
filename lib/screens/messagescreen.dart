@@ -21,20 +21,15 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   ScrollController _scrollController = ScrollController();
 
-  DateTime now = DateTime.now();
-
-
 
   void onSendMessage() async {
     if (_message.text.isNotEmpty) {
 
-      DateTime now = DateTime.now();
-      String  formattedTime = "${now.hour}:${now.minute}";
       Map<String, dynamic> chatData = {
         "sendBy": _auth.currentUser!.displayName,
         "message": _message.text,
         "type": "text",
-        "time": formattedTime,
+        "time": FieldValue.serverTimestamp(),
       };
 
       _message.clear();
@@ -93,12 +88,12 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                         }
                         else
                           {
-                            Map<String, dynamic> chatMap0 =
+                            Map<String, dynamic> prevchatmap =
                             snapshot.data!.docs[index-1].data()
                             as Map<String, dynamic>;
-                            if(chatMap0['sendBy']==chatMap['sendBy'])
+                            if(prevchatmap['sendBy']==chatMap['sendBy'])
                             {
-                              return MessageTile(size, chatMap, 0);
+                              return MessageTile(size, chatMap, 0 );
                             }
                             return MessageTile(size, chatMap,1);
                           }
@@ -197,15 +192,6 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                               fontWeight: FontWeight.w400,
                               color: Colors.black,
                             ),
-                          ),
-                        ),
-                        Text(
-                          chatMap['time'].toString(),
-                          textAlign: TextAlign.end,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.w400,
-                            color: Colors.black,
                           ),
                         ),
                       ],
