@@ -20,12 +20,13 @@ class volunteerCard extends StatelessWidget {
     return Container(
       height: 200,
       width: size.width - 32,
+      margin: const EdgeInsets.all(8),
       decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.25),
+              color: Colors.black.withOpacity(0.10),
               blurRadius: 64,
             )
           ]),
