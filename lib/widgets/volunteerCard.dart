@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hapii/screens/volunteerscreen.dart';
 import 'package:hapii/services/const.dart';
 import 'package:unicons/unicons.dart';
 
@@ -17,117 +18,138 @@ class volunteerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    return Container(
-      height: 200,
-      width: size.width - 32,
-      margin: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.10),
-              blurRadius: 64,
-            )
-          ]),
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
-        child: Column(children: [
-          Row(
-            children: [
-              Container(
-                height: 30,
-                decoration: BoxDecoration(
-                    color: kAccentGrey,
-                    borderRadius: BorderRadius.circular(50)),
-                child: Container(
-                  margin: const EdgeInsets.only(left: 12, right: 12),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        UniconsLine.clock_five,
-                        size: 14,
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text("Starts on $date"),
-                    ],
-                  ),
-                ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => volunteerScreen(
+                image: const NetworkImage(
+                    "https://www.animalrescuetrustpune.com/wp-content/uploads/2022/03/1.png"),
+                name: 'Animal Rescue Trust',
+                location: 'Pune, Maharashtra',
+                contact: '1234567890',
+                description:
+                    "Animal Rescue Trust Pune is a non-profit organization dedicated to the rescue, rehabilitation, and welfare of animals in Pune, India. The organization primarily focuses on rescuing and caring for stray dogs, cats, and other animals in distress, providing them with food, medical care, and shelter. They also work towards creating awareness about animal welfare and promoting the adoption of rescued animals. The Animal Rescue Trust Pune relies on the support of volunteers, donations, and sponsorships to carry out their mission.",
+                donationUrl: 'https://www.animalrescuetrustpune.com/donate/',
+                websiteUrl: 'https://www.animalrescuetrustpune.com/',
+                date: '10th October',
               ),
-              const SizedBox(
-                width: 8,
-              ),
-              Container(
-                height: 30,
-                decoration: BoxDecoration(
-                    color: kAccentGrey,
-                    borderRadius: BorderRadius.circular(50)),
-                child: Container(
-                  margin: const EdgeInsets.only(left: 12, right: 12),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        UniconsLine.location_point,
-                        size: 14,
-                      ),
-                      const SizedBox(
-                        width: 4,
-                      ),
-                      Text(location),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          Container(
-            margin: const EdgeInsets.only(top: 12, bottom: 12),
-            child: Row(
+            ));
+      },
+      child: Container(
+        height: 200,
+        width: size.width - 32,
+        margin: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.10),
+                blurRadius: 64,
+              )
+            ]),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
+          child: Column(children: [
+            Row(
               children: [
                 Container(
-                  height: 75,
-                  width: 75,
+                  height: 30,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.amber,
+                      color: kAccentGrey,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 12, right: 12),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          UniconsLine.clock_five,
+                          size: 14,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text("Starts on $date"),
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
-                  width: 12,
+                  width: 8,
                 ),
-                SizedBox(
-                  height: 75,
-                  width: size.width - 152,
-                  child: Text(
-                    orgDescription,
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
+                Container(
+                  height: 30,
+                  decoration: BoxDecoration(
+                      color: kAccentGrey,
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 12, right: 12),
+                    child: Row(
+                      children: [
+                        const Icon(
+                          UniconsLine.location_point,
+                          size: 14,
+                        ),
+                        const SizedBox(
+                          width: 4,
+                        ),
+                        Text(location),
+                      ],
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          GestureDetector(
-            onTap: () {
-              HapticFeedback.lightImpact();
-            },
-            child: Container(
-              width: size.width,
-              height: 30,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50), color: Colors.black),
-              child: Center(
-                child: Text(
-                  "Apply to Volunteer",
-                  style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+            Container(
+              margin: const EdgeInsets.only(top: 12, bottom: 12),
+              child: Row(
+                children: [
+                  Container(
+                    height: 75,
+                    width: 75,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.amber,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 12,
+                  ),
+                  SizedBox(
+                    height: 75,
+                    width: size.width - 152,
+                    child: Text(
+                      orgDescription,
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+              },
+              child: Container(
+                width: size.width,
+                height: 30,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.black),
+                child: Center(
+                  child: Text(
+                    "Apply to Volunteer",
+                    style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
+                  ),
                 ),
               ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }

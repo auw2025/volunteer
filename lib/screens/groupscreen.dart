@@ -1,6 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/screens/messagescreen.dart';
+import 'package:hapii/services/const.dart';
+import 'package:hapii/widgets/bottomNavBar.dart';
 
 class Groupscreen extends StatelessWidget {
   const Groupscreen({Key? key}) : super(key: key);
@@ -11,33 +14,40 @@ class Groupscreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
-        title: const Text(
+        backgroundColor: kPrimaryBlack,
+        title: Text(
           'Communities',
-          style: TextStyle(
+          style: GoogleFonts.inter(
               color: Colors.white,
               fontSize: 20,
               fontWeight: FontWeight.w500,
               letterSpacing: 2),
         ),
       ),
+      backgroundColor: kPrimaryBG,
+      bottomNavigationBar: BottomNavBar(currentIndex: 1),
       body: StreamBuilder<QuerySnapshot>(
-        stream: _firestore.collection('community').snapshots(),
-
-        builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          return ListView.builder(
-            itemCount: snapshot.data!.docs.length,
-            itemBuilder: (context, index) {
-              Map<String, dynamic> group = snapshot.data!.docs[index].data() as Map<String, dynamic>;
-
-              return Group(size:size, Groupinfo:group['mission'] ,Grouplogo:group['logo'] ,Groupname:group['name'] ,);
-            },
-          );
-        } else {
-          return Container();
-        }
-      }),
+          stream: _firestore.collection('community').snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  Map<String, dynamic> group =
+                      snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                  return Group(
+                    size: size,
+                    Groupinfo: group['mission'],
+                    Grouplogo: group['logo'],
+                    Groupname: group['name'],
+                  );
+                },
+              );
+            } else {
+              return Container();
+            }
+          }),
     );
   }
 }
@@ -63,22 +73,35 @@ class Group extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  GroupChatRoom(groupName: Groupname, groupChatId: Groupname)),
+              builder: (context) => GroupChatRoom(
+                  groupName: Groupname,
+                  groupChatId: Groupname,
+                  groupImage: Grouplogo)),
         );
       },
       child: Container(
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
-            border: Border.all(color: Colors.black),
-            color: Colors.black12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.2),
+                spreadRadius: 5,
+                blurRadius: 7,
+                offset: const Offset(0, 3),
+              ),
+            ],
+            color: Colors.white),
         height: size.height * 0.1,
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey.withOpacity(0.1)),
+                borderRadius: BorderRadius.circular(50),
+              ),
               child: CircleAvatar(
                 radius: 30,
                 backgroundImage: NetworkImage(Grouplogo),
@@ -91,14 +114,14 @@ class Group extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(Groupname,
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                           fontSize: 20, fontWeight: FontWeight.w400)),
                   const SizedBox(
                     height: 4,
                   ),
                   Text(
                     Groupinfo,
-                    style: const TextStyle(
+                    style: GoogleFonts.inter(
                         fontSize: 14, fontWeight: FontWeight.w300),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hapii/screens/groupscreen.dart';
 import 'package:hapii/screens/homescreen.dart';
 import 'package:hapii/screens/searchscreen.dart';
 import 'package:hapii/services/const.dart';
@@ -61,6 +62,10 @@ class _BottomNavBarState extends State<BottomNavBar> {
             IconButton(
               onPressed: () {
                 setState(() {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const Groupscreen()));
                   widget.currentIndex = 1;
                 });
               },

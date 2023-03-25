@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:hapii/services/const.dart';
 
 class GroupChatRoom extends StatefulWidget {
-  final String groupChatId, groupName;
+  final String groupChatId, groupName, groupImage;
 
-  GroupChatRoom({required this.groupName, required this.groupChatId, Key? key})
+  GroupChatRoom(
+      {required this.groupName,
+      required this.groupChatId,
+      required this.groupImage,
+      Key? key})
       : super(key: key);
 
   @override
@@ -21,10 +26,8 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   ScrollController _scrollController = ScrollController();
 
-
   void onSendMessage() async {
     if (_message.text.isNotEmpty) {
-
       Map<String, dynamic> chatData = {
         "sendBy": _auth.currentUser!.displayName,
         "message": _message.text,
@@ -43,21 +46,27 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
   }
 
   @override
-
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
+        leading: Container(
+          margin: const EdgeInsets.fromLTRB(10, 10, 0, 10),
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(widget.groupImage),
+          ),
+        ),
+        backgroundColor: kPrimaryBlack,
         title: Text(
           widget.groupName,
-          style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 2),
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
+      backgroundColor: kPrimaryBG,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -73,8 +82,9 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    WidgetsBinding.instance!.addPostFrameCallback((_) {
-                      _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                    WidgetsBinding.instance.addPostFrameCallback((_) {
+                      _scrollController
+                          .jumpTo(_scrollController.position.maxScrollExtent);
                     });
                     return ListView.builder(
                       controller: _scrollController,
@@ -83,20 +93,17 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                         Map<String, dynamic> chatMap =
                             snapshot.data!.docs[index].data()
                                 as Map<String, dynamic>;
-                        if(index == 0) {
-                          return MessageTile(size, chatMap,1);
-                        }
-                        else
-                          {
-                            Map<String, dynamic> prevchatmap =
-                            snapshot.data!.docs[index-1].data()
-                            as Map<String, dynamic>;
-                            if(prevchatmap['sendBy']==chatMap['sendBy'])
-                            {
-                              return MessageTile(size, chatMap, 0 );
-                            }
-                            return MessageTile(size, chatMap,1);
+                        if (index == 0) {
+                          return MessageTile(size, chatMap, 1);
+                        } else {
+                          Map<String, dynamic> prevchatmap =
+                              snapshot.data!.docs[index - 1].data()
+                                  as Map<String, dynamic>;
+                          if (prevchatmap['sendBy'] == chatMap['sendBy']) {
+                            return MessageTile(size, chatMap, 0);
                           }
+                          return MessageTile(size, chatMap, 1);
+                        }
                       },
                     );
                   } else {
@@ -106,30 +113,32 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
               ),
             ),
             SizedBox(
-              height: size.height*0.1,
+              height: size.height * 0.1,
               width: size.width,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: size.height*0.1,
-                    width: size.width*0.8,
-                    margin: const EdgeInsets.symmetric(horizontal: 10,vertical:15),
+                    height: size.height * 0.1,
+                    width: size.width * 0.8,
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 15),
                     alignment: Alignment.centerRight,
                     child: TextField(
                       controller: _message,
                       decoration: InputDecoration(
-                          suffixIcon: IconButton(
-                            onPressed: () {},
-                            icon: const Icon(Icons.photo),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.black),
+                            borderRadius: BorderRadius.circular(50),
                           ),
                           hintText: "Send Message",
                           hintStyle: const TextStyle(
-                          color: Colors.black54,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 1),
+                            color: Colors.black54,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          focusColor: kPrimaryBlack,
                           border: OutlineInputBorder(
                             borderSide: const BorderSide(color: Colors.black),
                             borderRadius: BorderRadius.circular(5),
@@ -151,34 +160,39 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
     return Builder(builder: (_) {
       if (chatMap['type'] == "text") {
         return Container(
-          width: size.width*0.8,
+          width: size.width * 0.8,
           alignment: chatMap['sendBy'] == _auth.currentUser!.displayName
               ? Alignment.centerRight
               : Alignment.centerLeft,
           child: Container(
-              width: size.width*0.8,
+              width: size.width * 0.8,
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               margin: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
-                crossAxisAlignment: chatMap['sendBy'] == _auth.currentUser!.displayName ?CrossAxisAlignment.end:CrossAxisAlignment.start,
+                crossAxisAlignment:
+                    chatMap['sendBy'] == _auth.currentUser!.displayName
+                        ? CrossAxisAlignment.end
+                        : CrossAxisAlignment.start,
                 children: [
-                  (x==1)?Container(
-                    padding: const EdgeInsets.only(bottom: 5),
-                    child: Text(
-                      chatMap['sendBy'],
-                      style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 1),
-                      textAlign: TextAlign.end,
-                    ),
-                  ):SizedBox(),
+                  (x == 1)
+                      ? Container(
+                          padding: const EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            chatMap['sendBy'],
+                            style: GoogleFonts.inter(
+                              color: Colors.black,
+                              fontSize: 16,
+                            ),
+                            textAlign: TextAlign.end,
+                          ),
+                        )
+                      : SizedBox(),
                   Container(
-                    padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
-                      color: Colors.black26,
+                      color: kAccentGreen,
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,

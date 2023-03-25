@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hapii/screens/orgscreen.dart';
 import 'package:hapii/services/auth.dart';
 import 'package:hapii/services/const.dart';
 import 'package:hapii/widgets/bottomNavBar.dart';
@@ -14,6 +16,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    FirebaseFirestore logo = FirebaseFirestore.instance;
     return Scaffold(
         backgroundColor: kPrimaryBG,
         bottomNavigationBar: BottomNavBar(
@@ -24,7 +27,7 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                margin: const EdgeInsets.only(left: 8, right: 8),
+                margin: const EdgeInsets.only(left: 8, right: 8, top: 8),
                 child: Text(
                   "Featured organizations",
                   style: GoogleFonts.inter(
@@ -32,15 +35,41 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 100,
-                margin: const EdgeInsets.all(8),
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  itemCount: 10,
-                  itemBuilder: (context, index) {
-                    return orgCard(NetworkImage(
-                        'https://images.unsplash.com/photo-1678614033802-d8b11cd7fb93?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80'));
+                height: 115,
+                margin: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+                child: StreamBuilder(
+                  stream: logo.collection("community").snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (context, index) {
+                          Map<String, dynamic> group =
+                              snapshot.data!.docs[index].data()
+                                  as Map<String, dynamic>;
+                          return orgCard(
+                            NetworkImage(group['logo']),
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => orgScreen(
+                                        image: NetworkImage(group['logo']),
+                                        name: group['name'],
+                                        location: group['location'],
+                                        contact: group['contact'],
+                                        description: group['description'],
+                                        websiteUrl: group['website'],
+                                        donationUrl: group['donation'],
+                                      )),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Container();
+                    }
                   },
                 ),
               ),
