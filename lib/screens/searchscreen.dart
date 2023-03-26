@@ -12,9 +12,8 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        bottomNavigationBar: BottomNavBar(currentIndex: 2),
         body: Center(
-          child: Text('Search Screen'),
-        ));
+      child: Text('Search Screen'),
+    ));
   }
 }

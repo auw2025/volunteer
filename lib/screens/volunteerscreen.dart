@@ -34,7 +34,6 @@ class _volunteerScreenState extends State<volunteerScreen> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(currentIndex: 0),
       backgroundColor: kPrimaryBG,
       body: Column(
         children: [

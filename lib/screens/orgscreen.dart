@@ -33,7 +33,6 @@ class _orgScreenState extends State<orgScreen> {
   Widget build(BuildContext context) {
     FirebaseFirestore logo = FirebaseFirestore.instance;
     return Scaffold(
-      bottomNavigationBar: BottomNavBar(currentIndex: 0),
       backgroundColor: kPrimaryBG,
       body: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -220,7 +219,9 @@ class _orgScreenState extends State<orgScreen> {
                           () => Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => orgScreen(
+                                builder: (context) => BottomNavBar(
+                                    true,
+                                    orgScreen(
                                       image: NetworkImage(group['logo']),
                                       name: group['name'],
                                       location: group['location'],
@@ -228,7 +229,7 @@ class _orgScreenState extends State<orgScreen> {
                                       description: group['description'],
                                       websiteUrl: group['website'],
                                       donationUrl: group['donation'],
-                                    )),
+                                    ))),
                           ),
                         );
                       },

@@ -19,9 +19,6 @@ class HomeScreen extends StatelessWidget {
     FirebaseFirestore logo = FirebaseFirestore.instance;
     return Scaffold(
         backgroundColor: kPrimaryBG,
-        bottomNavigationBar: BottomNavBar(
-          currentIndex: 0,
-        ),
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -54,7 +51,9 @@ class HomeScreen extends StatelessWidget {
                             () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => orgScreen(
+                                  builder: (context) => BottomNavBar(
+                                      true,
+                                      orgScreen(
                                         image: NetworkImage(group['logo']),
                                         name: group['name'],
                                         location: group['location'],
@@ -62,7 +61,7 @@ class HomeScreen extends StatelessWidget {
                                         description: group['description'],
                                         websiteUrl: group['website'],
                                         donationUrl: group['donation'],
-                                      )),
+                                      ))),
                             ),
                           );
                         },

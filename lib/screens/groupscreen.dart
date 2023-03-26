@@ -25,7 +25,6 @@ class Groupscreen extends StatelessWidget {
         ),
       ),
       backgroundColor: kPrimaryBG,
-      bottomNavigationBar: BottomNavBar(currentIndex: 1),
       body: StreamBuilder<QuerySnapshot>(
           stream: _firestore.collection('community').snapshots(),
           builder: (context, snapshot) {

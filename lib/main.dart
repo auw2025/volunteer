@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:hapii/screens/homescreen.dart';
 import 'package:hapii/screens/loginscreen.dart';
+import 'package:hapii/screens/profilescreen.dart';
 import 'package:hapii/services/auth.dart';
+import 'package:hapii/widgets/bottomNavBar.dart';
 import 'package:provider/provider.dart';
 
 Future main() async {
@@ -36,7 +38,9 @@ class NavScreen extends StatelessWidget {
       body: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
-          return snapshot.hasData ? HomeScreen() : LoginScreen();
+          return snapshot.hasData
+              ? BottomNavBar(false, Text(""))
+              : const LoginScreen();
         },
       ),
     );
