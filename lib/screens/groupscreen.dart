@@ -79,6 +79,7 @@ class Group extends StatelessWidget {
         );
       },
       child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(Radius.circular(10)),

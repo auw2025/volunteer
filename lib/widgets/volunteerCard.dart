@@ -7,13 +7,26 @@ import 'package:unicons/unicons.dart';
 
 class volunteerCard extends StatelessWidget {
   final String location;
+  final String donation;
+  final String website;
+  final String name;
+  final String banner;
   final String date;
   final String orgDescription;
+  final String image;
+  final String contact;
   const volunteerCard(
       {super.key,
+      required this. contact,
+      required this.name,
+      required this.banner,
+      required this.donation,
+      required this.image,
       required this.location,
       required this.date,
-      required this.orgDescription});
+      required this.orgDescription,
+      required this.website,
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -24,34 +37,36 @@ class volunteerCard extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => volunteerScreen(
-                image: const NetworkImage(
-                    "https://www.animalrescuetrustpune.com/wp-content/uploads/2022/03/1.png"),
-                name: 'Animal Rescue Trust',
-                location: 'Pune, Maharashtra',
-                contact: '1234567890',
+                banner: NetworkImage("${banner}"),
+                image: NetworkImage(
+                    "${image}"),
+                name: '${name}',
+                location: '${location}',
+                contact: '${contact}',
                 description:
-                    "Animal Rescue Trust Pune is a non-profit organization dedicated to the rescue, rehabilitation, and welfare of animals in Pune, India. The organization primarily focuses on rescuing and caring for stray dogs, cats, and other animals in distress, providing them with food, medical care, and shelter. They also work towards creating awareness about animal welfare and promoting the adoption of rescued animals. The Animal Rescue Trust Pune relies on the support of volunteers, donations, and sponsorships to carry out their mission.",
-                donationUrl: 'https://www.animalrescuetrustpune.com/donate/',
-                websiteUrl: 'https://www.animalrescuetrustpune.com/',
-                date: '10th October',
+                    "${orgDescription}",
+                donationUrl: '${donation}',
+                websiteUrl: '${website}',
+                date: '${date}',
               ),
             ));
       },
       child: Container(
         height: 200,
-        width: size.width - 32,
-        margin: const EdgeInsets.all(8),
+        width: size.width,
+        padding: const EdgeInsets.fromLTRB(16, 20, 16, 10),
+        margin: const EdgeInsets.all(15),
         decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: Colors.white),
+            borderRadius: BorderRadius.circular(15),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.10),
-                blurRadius: 64,
+                color: Colors.black.withOpacity(0.5),
+                blurRadius: 5,
+                offset: const Offset(0, 4),
               )
             ]),
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
           child: Column(children: [
             Row(
               children: [
@@ -59,7 +74,7 @@ class volunteerCard extends StatelessWidget {
                   height: 30,
                   decoration: BoxDecoration(
                       color: kAccentGrey,
-                      borderRadius: BorderRadius.circular(50)),
+                      borderRadius: BorderRadius.circular(15)),
                   child: Container(
                     margin: const EdgeInsets.only(left: 12, right: 12),
                     child: Row(
@@ -77,7 +92,7 @@ class volunteerCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  width: 8,
+                  width: 5,
                 ),
                 Container(
                   height: 30,
@@ -110,16 +125,17 @@ class volunteerCard extends StatelessWidget {
                     height: 75,
                     width: 75,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
+                      image: DecorationImage(image: NetworkImage(image)),
+                      borderRadius: BorderRadius.circular(10),
                       color: Colors.amber,
                     ),
                   ),
                   const SizedBox(
-                    width: 12,
+                    width: 10,
                   ),
                   SizedBox(
                     height: 75,
-                    width: size.width - 152,
+                    width: size.width*0.6,
                     child: Text(
                       orgDescription,
                       style: GoogleFonts.inter(
@@ -136,7 +152,8 @@ class volunteerCard extends StatelessWidget {
               },
               child: Container(
                 width: size.width,
-                height: 30,
+                height: 35,
+                margin: EdgeInsets.symmetric(horizontal: 20),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(50),
                     color: Colors.black),
@@ -149,7 +166,6 @@ class volunteerCard extends StatelessWidget {
               ),
             ),
           ]),
-        ),
       ),
     );
   }

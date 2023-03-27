@@ -21,7 +21,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
-      child: MaterialApp(
+      child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: NavScreen(),
       ),
@@ -39,7 +39,7 @@ class NavScreen extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           return snapshot.hasData
-              ? BottomNavBar(false, Text(""))
+              ? BottomNavBar(false, const Text(""))
               : const LoginScreen();
         },
       ),

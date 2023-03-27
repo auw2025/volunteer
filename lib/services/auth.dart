@@ -22,6 +22,7 @@ Future<void> startcollection () async
       'name': FirebaseAuth.instance.currentUser!.displayName,
       'Email': FirebaseAuth.instance.currentUser!.email,
       'Groups': FieldValue.arrayUnion([]),
+      'Volunteer': FieldValue.arrayUnion([]),
 
     });
   }

@@ -2,13 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/screens/orgscreen.dart';
-import 'package:hapii/services/auth.dart';
 import 'package:hapii/services/const.dart';
 import 'package:hapii/widgets/bottomNavBar.dart';
 import 'package:hapii/widgets/orgCard.dart';
 import 'package:hapii/widgets/volunteerCard.dart';
-import 'package:provider/provider.dart';
-import 'package:unicons/unicons.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -16,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    FirebaseFirestore logo = FirebaseFirestore.instance;
+    FirebaseFirestore data = FirebaseFirestore.instance;
     return Scaffold(
         backgroundColor: kPrimaryBG,
         body: SafeArea(
@@ -28,14 +25,17 @@ class HomeScreen extends StatelessWidget {
                 child: Text(
                   "Featured organizations",
                   style: GoogleFonts.inter(
-                      fontSize: 24, fontWeight: FontWeight.w500),
-                ),
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                      )
+                  ),
               ),
               Container(
                 height: 115,
                 margin: const EdgeInsets.fromLTRB(8, 8, 0, 8),
                 child: StreamBuilder(
-                  stream: logo.collection("community").snapshots(),
+                  stream: data.collection("community").snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
@@ -43,31 +43,32 @@ class HomeScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
-                          Map<String, dynamic> group =
-                              snapshot.data!.docs[index].data()
-                                  as Map<String, dynamic>;
+                          Map<String, dynamic> mapdata = snapshot.data!.docs[index].data();
                           return orgCard(
-                            NetworkImage(group['logo']),
+                            NetworkImage(mapdata['logo']),
                             () => Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: (context) => BottomNavBar(
                                       true,
-                                      orgScreen(
-                                        image: NetworkImage(group['logo']),
-                                        name: group['name'],
-                                        location: group['location'],
-                                        contact: group['contact'],
-                                        description: group['description'],
-                                        websiteUrl: group['website'],
-                                        donationUrl: group['donation'],
+                                      OrgScreen(
+                                        banner: NetworkImage(mapdata['banner']),
+                                        image: NetworkImage(mapdata['logo']),
+                                        name: mapdata['name'],
+                                        location: mapdata['location'],
+                                        contact: mapdata['contact'],
+                                        description: mapdata['description'],
+                                        websiteUrl: mapdata['website'],
+                                        donationUrl: mapdata['donation'],
                                       ))),
                             ),
                           );
                         },
                       );
                     } else {
-                      return Container();
+                      return Container(
+                        height: size.height*0.15,
+                      );
                     }
                   },
                 ),
@@ -75,25 +76,47 @@ class HomeScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(left: 8, right: 8),
                 child: Text(
-                  "Get Envolved",
-                  style: GoogleFonts.inter(
-                      fontSize: 24, fontWeight: FontWeight.w500),
+                  "Get Involved",
+                    style: GoogleFonts.inter(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    )
                 ),
               ),
               Expanded(
                 child: MediaQuery.removePadding(
                   context: context,
                   removeTop: true,
-                  child: ListView.builder(
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemCount: 10,
-                    itemBuilder: (context, index) {
-                      return volunteerCard(
-                          location: "Pune",
-                          date: "1st April",
-                          orgDescription: desc);
-                    },
+                  child: StreamBuilder(
+                    stream: data.collection("volunteer").snapshots(),
+
+                    builder: (context, snapshot) {
+                      if(snapshot.hasData)
+                        {
+                          return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (context, index) {
+                              Map<String, dynamic> mapdata = snapshot.data!.docs[index].data();
+                              return volunteerCard(
+                                  image: mapdata['logo'],
+                                  location: mapdata['location'],
+                                  date: mapdata['date'],
+                                  orgDescription: mapdata['description'],
+                                contact: mapdata['contact'],
+                                name: mapdata['name'],
+                                banner: mapdata['banner'],
+                                donation: mapdata['donation'],
+                                website: mapdata['website'],);
+                            },
+                          );
+                        }
+                      else {
+                        return Container();
+                      }
+                    }
                   ),
                 ),
               ),
@@ -102,6 +125,3 @@ class HomeScreen extends StatelessWidget {
         ));
   }
 }
-
-String desc =
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of .";

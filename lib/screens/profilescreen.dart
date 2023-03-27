@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/main.dart';
+import 'package:hapii/screens/orgcreatescreen.dart';
+import 'package:hapii/screens/volunteercreatescreen.dart';
 import 'package:hapii/services/const.dart';
 import 'package:hapii/widgets/bottomNavBar.dart';
+
+import '../widgets/volunteerCard.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,6 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore data = FirebaseFirestore.instance;
     var size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +74,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Orgcreate()));
+              },
               child: Container(
                 height: 55,
                 width: size.width - 40,
@@ -94,7 +103,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             SizedBox(height: 20),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Volunteercreate()));
+              },
               child: Container(
                 height: 55,
                 width: size.width - 40,
@@ -116,6 +128,63 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                   ),
                 ),
+              ),
+            ),
+            Container(
+              alignment: Alignment.centerLeft,
+              margin: const EdgeInsets.only(left: 20, top: 20),
+              child: Text("Applied Volunteer",
+                  style: GoogleFonts.inter(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                  )),
+            ),
+            Expanded(
+              child: MediaQuery.removePadding(
+                context: context,
+                removeTop: true,
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("Users")
+                        .doc(FirebaseAuth.instance.currentUser!.uid)
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        Map<String, dynamic>? volunteer = snapshot.data?.data();
+                        List<dynamic> volunteerlist = volunteer?['volunteer'];
+                        return ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemCount: volunteerlist.length,
+                          itemBuilder: (context, index) {
+                            return FutureBuilder(
+                              future: FirebaseFirestore.instance.collection('volunteer').doc(volunteerlist[index].toString()).get(),
+                                builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                Map<String, dynamic>? volunteerdata =
+                                    snapshot.data?.data();
+                                return volunteerCard(
+                                  image: volunteerdata!['logo'],
+                                  location: volunteerdata!['location'],
+                                  date: volunteerdata!['date'],
+                                  orgDescription: volunteerdata!['description'],
+                                  contact: volunteerdata!['contact'],
+                                  name: volunteerdata!['name'],
+                                  banner: volunteerdata!['banner'],
+                                  donation: volunteerdata!['donation'],
+                                  website: volunteerdata!['website'],
+                                );
+                              } else {
+                                return Container();
+                              }
+                            });
+                          },
+                        );
+                      } else {
+                        return Container();
+                      }
+                    }),
               ),
             ),
           ],
