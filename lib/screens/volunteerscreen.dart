@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/services/const.dart';
 import 'package:hapii/services/extras.dart';
@@ -175,11 +176,10 @@ class _volunteerScreenState extends State<volunteerScreen> {
                   color: Colors.grey.withOpacity(0.3)),
               child:  Text(
                 widget.description,
-                style: const TextStyle(
+                style: GoogleFonts.inter(
                     fontSize: 18,
                     color: Colors.black,
-                    fontWeight: FontWeight.w200,
-                    letterSpacing: 2),
+                    ),
               )),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
@@ -267,6 +267,12 @@ class _volunteerScreenState extends State<volunteerScreen> {
                 ])
               }
               );
+              FirebaseFirestore.instance.collection("volunteer")
+                  .doc(widget.name).collection('appliedvolunteer').doc(FirebaseAuth.instance.currentUser!.email).set({
+                'name': FirebaseAuth.instance.currentUser!.displayName,
+                'photo': FirebaseAuth.instance.currentUser!.photoURL,
+                'gmail': FirebaseAuth.instance.currentUser!.email,
+              });
             },
             child: Container(
               margin: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
@@ -321,6 +327,80 @@ class _volunteerScreenState extends State<volunteerScreen> {
               ),
             ),
           ),
+          // FutureBuilder(
+          // future: FirebaseFirestore.instance.collection('volunteer').doc(widget.name).collection('appliedvolunteer').get(),
+          // builder: (context, snapshot) {
+          //   if (snapshot.hasData) {
+          //
+          //     return SizedBox(
+          //       height: snapshot.data!.docs.length*100, // Specify a fixed height for the inner ListView
+          //       child: ListView.builder(
+          //         shrinkWrap: true,
+          //         itemCount: snapshot.data!.docs.length,
+          //         itemBuilder: (BuildContext context, int innerIndex) {
+          //           Map<String, dynamic> mapdata = snapshot.data!.docs[innerIndex].data();
+          //           return SizedBox(
+          //               height: 100,
+          //               width: size.width,
+          //               child: ListView(
+          //                 scrollDirection: Axis.horizontal,
+          //                 children: [
+          //                   Container(
+          //                     alignment: Alignment.center,
+          //                     width: size.width*0.9,
+          //                     decoration: BoxDecoration(
+          //                         color: Colors.white,
+          //                         border: Border.all(color: Colors.white),
+          //                         borderRadius: BorderRadius.circular(15),
+          //                         boxShadow: [
+          //                           BoxShadow(
+          //                             color: Colors.black.withOpacity(0.2),
+          //                             blurRadius: 5,
+          //                             offset: const Offset(0, 4),
+          //                           )
+          //                         ]),
+          //                     padding: EdgeInsets.only(top: 10, bottom: 10,right: 10,left: 10),
+          //                     margin: EdgeInsets.symmetric(vertical: 15,horizontal: 20),
+          //                     child:  Row(
+          //                       children: [
+          //                         CircleAvatar(
+          //                           radius: 50,
+          //                           backgroundImage: NetworkImage("${mapdata['image']}"),
+          //                         ),
+          //                         Column(
+          //                           crossAxisAlignment: CrossAxisAlignment.start,
+          //                           mainAxisAlignment: MainAxisAlignment.center,
+          //                           children: [
+          //                             Text(
+          //                               mapdata['image'],
+          //                               style: TextStyle(
+          //                                 fontSize: 20,
+          //                                 fontWeight: FontWeight.bold,
+          //                               ),
+          //                             ),
+          //                             SizedBox(height: 4),
+          //                             Text(
+          //                               mapdata['image'],
+          //                               style: TextStyle(
+          //                                 fontSize: 16,
+          //                                 fontWeight: FontWeight.w400,
+          //                               ),
+          //                             ),
+          //                           ],
+          //                         ),
+          //                       ],
+          //                     ),
+          //
+          //                   ),
+          //                 ],
+          //               ));
+          //         },
+          //       ),
+          //     );
+          //   } else {
+          //     return Container();
+          //   }
+          // }),
           const SizedBox(height: 20,)
         ],
       ),
