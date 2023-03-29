@@ -2,9 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/services/const.dart';
 import 'package:hapii/services/extras.dart';
+
 
 class volunteerScreen extends StatefulWidget {
   ImageProvider image;
@@ -33,9 +35,12 @@ class volunteerScreen extends StatefulWidget {
 }
 
 class _volunteerScreenState extends State<volunteerScreen> {
+  late bool apply = true;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor: kPrimaryBG,
       body: ListView(
@@ -259,11 +264,23 @@ class _volunteerScreenState extends State<volunteerScreen> {
           const SizedBox(height: 8),
           GestureDetector(
             onTap: () {
+              setState(() {
+                apply = false;
+                Fluttertoast.showToast(
+                    msg: "Succesfully applied",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.green.withOpacity(0.8),
+                    textColor: Colors.white,
+                    fontSize: 16.0
+                );
+              });
               FirebaseFirestore.instance.collection("Users")
                   .doc(FirebaseAuth.instance.currentUser!.uid)
                   .update({
                 'volunteer': FieldValue.arrayUnion([
-                  "${widget.name}"
+                  (widget.name)
                 ])
               }
               );
@@ -288,7 +305,7 @@ class _volunteerScreenState extends State<volunteerScreen> {
               ),
               child: Center(
                 child: Text(
-                  "Apply Now",
+                  apply? "Apply Now":"Applied",
                   style: GoogleFonts.inter(
                     color: Color(0xFF59241D),
                     fontSize: 20,
