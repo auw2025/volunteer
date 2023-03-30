@@ -22,18 +22,16 @@ class HomeScreen extends StatelessWidget {
             children: [
               Container(
                 margin: const EdgeInsets.only(left: 8, right: 8, top: 8),
-                child: Text(
-                  "Featured organizations",
-                  style: GoogleFonts.inter(
+                child: Text("Featured organizations",
+                    style: GoogleFonts.inter(
                       color: Colors.black,
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
-                      )
-                  ),
+                    )),
               ),
               Container(
                 height: 115,
-                margin: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+                margin: const EdgeInsets.fromLTRB(16, 8, 0, 8),
                 child: StreamBuilder(
                   stream: data.collection("community").snapshots(),
                   builder: (context, snapshot) {
@@ -43,7 +41,8 @@ class HomeScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
-                          Map<String, dynamic> mapdata = snapshot.data!.docs[index].data();
+                          Map<String, dynamic> mapdata =
+                              snapshot.data!.docs[index].data();
                           return orgCard(
                             NetworkImage(mapdata['logo']),
                             () => Navigator.push(
@@ -66,8 +65,31 @@ class HomeScreen extends StatelessWidget {
                         },
                       );
                     } else {
-                      return Container(
-                        height: size.height*0.15,
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return UnconstrainedBox(
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              margin: const EdgeInsets.only(right: 8),
+                              decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.5),
+                                      spreadRadius: 0,
+                                      blurRadius: 4,
+                                      offset: const Offset(
+                                          0, 4), // changes position of shadow
+                                    ),
+                                  ],
+                                  color: Colors.grey,
+                                  borderRadius: BorderRadius.circular(8)),
+                            ),
+                          );
+                        },
                       );
                     }
                   },
@@ -75,49 +97,45 @@ class HomeScreen extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(left: 8, right: 8),
-                child: Text(
-                  "Get Involved",
+                child: Text("Get Involved",
                     style: GoogleFonts.inter(
                       color: Colors.black,
                       fontSize: 24,
                       fontWeight: FontWeight.w500,
-                    )
-                ),
+                    )),
               ),
               Expanded(
                 child: MediaQuery.removePadding(
                   context: context,
                   removeTop: true,
                   child: StreamBuilder(
-                    stream: data.collection("volunteer").snapshots(),
-
-                    builder: (context, snapshot) {
-                      if(snapshot.hasData)
-                        {
+                      stream: data.collection("volunteer").snapshots(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
                           return ListView.builder(
                             physics: const BouncingScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             itemCount: snapshot.data!.docs.length,
                             itemBuilder: (context, index) {
-                              Map<String, dynamic> mapdata = snapshot.data!.docs[index].data();
+                              Map<String, dynamic> mapdata =
+                                  snapshot.data!.docs[index].data();
                               return volunteerCard(
-                                  image: mapdata['logo'],
-                                  location: mapdata['location'],
-                                  date: mapdata['date'],
-                                  orgDescription: mapdata['description'],
+                                image: mapdata['logo'],
+                                location: mapdata['location'],
+                                date: mapdata['date'],
+                                orgDescription: mapdata['description'],
                                 contact: mapdata['contact'],
                                 name: mapdata['name'],
                                 banner: mapdata['banner'],
                                 donation: mapdata['donation'],
-                                website: mapdata['website'],);
+                                website: mapdata['website'],
+                              );
                             },
                           );
+                        } else {
+                          return Container();
                         }
-                      else {
-                        return Container();
-                      }
-                    }
-                  ),
+                      }),
                 ),
               ),
             ],

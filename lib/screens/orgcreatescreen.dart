@@ -5,7 +5,6 @@ import 'package:google_fonts/google_fonts.dart';
 import '../services/const.dart';
 import '../services/firestore.dart';
 
-
 class Orgcreate extends StatelessWidget {
   Orgcreate({Key? key}) : super(key: key);
   TextEditingController name = TextEditingController();
@@ -18,7 +17,6 @@ class Orgcreate extends StatelessWidget {
   TextEditingController banner = TextEditingController();
   TextEditingController mission = TextEditingController();
   TextEditingController date = TextEditingController();
-
 
   @override
   Widget build(BuildContext context) {
@@ -36,13 +34,12 @@ class Orgcreate extends StatelessWidget {
         ),
       ),
       body: Container(
-
         child: ListView(
           padding: const EdgeInsets.symmetric(vertical: 10),
           children: [
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: const Text(
                 "Topic",
                 style: TextStyle(
@@ -56,7 +53,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 20,right: 20,bottom: 10),
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               width: size.width,
               height: 50,
               child: AutoSizeTextField(
@@ -80,12 +77,11 @@ class Orgcreate extends StatelessWidget {
                 style: const TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 1,
-
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: const Text(
                 "logo",
                 style: TextStyle(
@@ -99,7 +95,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 20,right: 20,bottom: 10),
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               width: size.width,
               height: 50,
               child: AutoSizeTextField(
@@ -124,12 +120,11 @@ class Orgcreate extends StatelessWidget {
                 style: const TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 1,
-
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: const Text(
                 "Banner",
                 style: TextStyle(
@@ -143,7 +138,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 20,right: 20,bottom: 10),
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               width: size.width,
               height: 50,
               child: AutoSizeTextField(
@@ -168,15 +163,14 @@ class Orgcreate extends StatelessWidget {
                 style: const TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 1,
-
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: const Text(
                 "Mission",
-                style:  TextStyle(
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -187,7 +181,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 20,right: 20,bottom: 10),
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               width: size.width,
               child: AutoSizeTextField(
                 decoration: InputDecoration(
@@ -210,15 +204,14 @@ class Orgcreate extends StatelessWidget {
                 style: const TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 2,
-
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: const Text(
                 "Description",
-                style:  TextStyle(
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -229,7 +222,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 20,right: 20,bottom: 10),
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               width: size.width,
               child: AutoSizeTextField(
                 decoration: InputDecoration(
@@ -252,15 +245,14 @@ class Orgcreate extends StatelessWidget {
                 style: const TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 5,
-
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-              child:const Text(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: const Text(
                 "Location",
-                style:  TextStyle(
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -271,7 +263,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 20,right: 20),
+              margin: EdgeInsets.only(left: 20, right: 20),
               width: size.width,
               height: 50,
               child: AutoSizeTextField(
@@ -295,15 +287,14 @@ class Orgcreate extends StatelessWidget {
                 style: TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 1,
-
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-              child:const Text(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: const Text(
                 "Contact",
-                style:  TextStyle(
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -314,7 +305,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 20,right: 20),
+              margin: EdgeInsets.only(left: 20, right: 20),
               width: size.width,
               height: 50,
               child: AutoSizeTextField(
@@ -338,15 +329,14 @@ class Orgcreate extends StatelessWidget {
                 style: TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 1,
-
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-              child:const Text(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: const Text(
                 "Website",
-                style:  TextStyle(
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -357,7 +347,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 20,right: 20),
+              margin: EdgeInsets.only(left: 20, right: 20),
               width: size.width,
               height: 50,
               child: AutoSizeTextField(
@@ -381,15 +371,14 @@ class Orgcreate extends StatelessWidget {
                 style: TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 1,
-
               ),
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.symmetric(horizontal: 20,vertical: 5),
-              child:const Text(
+              margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: const Text(
                 "Donation",
-                style:  TextStyle(
+                style: TextStyle(
                     color: Colors.black,
                     fontSize: 22,
                     fontWeight: FontWeight.w500,
@@ -400,7 +389,7 @@ class Orgcreate extends StatelessWidget {
             ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 20,right: 20),
+              margin: const EdgeInsets.only(left: 20, right: 20),
               width: size.width,
               height: 50,
               child: AutoSizeTextField(
@@ -424,7 +413,6 @@ class Orgcreate extends StatelessWidget {
                 style: TextStyle(fontSize: 22),
                 minFontSize: 18,
                 maxLines: 1,
-
               ),
             ),
             Container(
@@ -432,11 +420,21 @@ class Orgcreate extends StatelessWidget {
               padding: EdgeInsets.all(30),
               child: GestureDetector(
                 onTap: () {
-                  addcommunity(contact.text, description.text, location.text, logo.text, mission.text, website.text, name.text,banner.text,donation.text,);
+                  addcommunity(
+                    contact.text,
+                    description.text,
+                    location.text,
+                    logo.text,
+                    mission.text,
+                    website.text,
+                    name.text,
+                    banner.text,
+                    donation.text,
+                  );
                 },
                 child: Container(
-                  height: size.height*0.06,
-                  width: size.width*0.4,
+                  height: size.height * 0.06,
+                  width: size.width * 0.4,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Colors.red.withOpacity(0.5),
@@ -460,7 +458,6 @@ class Orgcreate extends StatelessWidget {
           ],
         ),
       ),
-
     );
   }
 }

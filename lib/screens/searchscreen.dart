@@ -19,16 +19,19 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     TextEditingController search = TextEditingController();
-    final CollectionReference CommunityCollection = FirebaseFirestore.instance.collection('community');
+    final CollectionReference CommunityCollection =
+        FirebaseFirestore.instance.collection('community');
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         body: Column(
           children: [
-            const SizedBox(height: 60,),
+            const SizedBox(
+              height: 60,
+            ),
             Container(
               alignment: Alignment.centerLeft,
-              margin: const EdgeInsets.only(left: 20,right: 20,bottom: 10),
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
               width: size.width,
               height: 50,
               child: TextField(
@@ -51,18 +54,19 @@ class _SearchScreenState extends State<SearchScreen> {
                     )),
                 controller: search,
                 style: const TextStyle(fontSize: 22),
-                onSubmitted: (value){
+                onSubmitted: (value) {
                   setState(() {
                     query = search.text;
                   });
                 },
                 maxLines: 1,
-
               ),
             ),
             Expanded(
               child: FutureBuilder(
-                future: CommunityCollection.where('name', isGreaterThanOrEqualTo: query).get(),
+                  future: CommunityCollection.where('name',
+                          isGreaterThanOrEqualTo: query)
+                      .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
                       return ListView.builder(
@@ -71,7 +75,8 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           Map<String, dynamic> group =
-                          snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                              snapshot.data!.docs[index].data()
+                                  as Map<String, dynamic>;
                           return Group(
                             size: size,
                             Groupinfo: group['mission'],
@@ -83,8 +88,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     } else {
                       return Container();
                     }
-                  }
-              ),
+                  }),
             )
           ],
         ));

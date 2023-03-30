@@ -7,16 +7,17 @@ import 'package:hapii/widgets/bottomNavBar.dart';
 import 'package:hapii/widgets/orgCard.dart';
 
 class OrgScreen extends StatefulWidget {
-  OrgScreen({
-    Key? key,required this.image,
-    required this.name,
-    required this.banner,
-    required this.location,
-    required this.contact,
-    required this.description,
-    required this.donationUrl,
-    required this.websiteUrl
-  }) : super(key: key);
+  OrgScreen(
+      {Key? key,
+      required this.image,
+      required this.name,
+      required this.banner,
+      required this.location,
+      required this.contact,
+      required this.description,
+      required this.donationUrl,
+      required this.websiteUrl})
+      : super(key: key);
   ImageProvider image;
   ImageProvider banner;
   String name;
@@ -56,27 +57,6 @@ class _OrgScreenState extends State<OrgScreen> {
                       ),
                     ),
                   ),
-                  // Container(
-                  //   height: size.height * 0.2,
-                  //   width: size.width,
-                  //   decoration:  BoxDecoration(
-                  //     gradient: LinearGradient(
-                  //         begin: Alignment.center,
-                  //         end: Alignment.bottomCenter,
-                  //         colors: [
-                  //           Colors.transparent,
-                  //           Colors.white.withOpacity(0.1),
-                  //           Colors.white.withOpacity(0.2),
-                  //           Colors.white.withOpacity(0.3),
-                  //           Colors.white.withOpacity(0.4),
-                  //           Colors.white.withOpacity(0.5),
-                  //           Colors.white.withOpacity(0.6),
-                  //           Colors.white.withOpacity(0.7),
-                  //           Colors.white.withOpacity(0.9),
-                  //           Colors.white
-                  //         ]),
-                  //   ),
-                  // ),
                   Container(
                     alignment: Alignment.topLeft,
                     width: size.width,
@@ -88,38 +68,38 @@ class _OrgScreenState extends State<OrgScreen> {
                         Container(
                           height: size.height * 0.1,
                           width: size.height * 0.1,
-                          margin: const EdgeInsets.symmetric(horizontal: 5),
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                 fit: BoxFit.cover,
-                                image: widget.image ,
+                                image: widget.image,
                               ),
-                              border: Border.all(color: Colors.black, width: 2),
+                              border: Border.all(
+                                  color: Colors.black.withOpacity(0.2),
+                                  width: 1),
                               borderRadius:
-                              BorderRadius.circular(size.height * 0.05)),
+                                  BorderRadius.circular(size.height * 0.05)),
                         ),
                         Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          margin: const EdgeInsets.symmetric(horizontal: 20),
                           child: Text(
                             widget.name,
                             style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 26,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 1),
+                              color: Colors.black,
+                              fontSize: 26,
+                              fontWeight: FontWeight.w500,
+                            ),
                             overflow: TextOverflow.ellipsis,
                             maxLines: 2,
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(left: 10,top :10),
+                          margin: const EdgeInsets.only(left: 20, top: 10),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
                               Container(
-                                margin:
-                                const EdgeInsets.symmetric(horizontal: 5),
-                                child:  Row(
+                                child: Row(
                                   children: [
                                     const Icon(
                                       Icons.location_on_outlined,
@@ -139,8 +119,8 @@ class _OrgScreenState extends State<OrgScreen> {
                               ),
                               Container(
                                 margin:
-                                const EdgeInsets.symmetric(horizontal: 5),
-                                child:  Row(
+                                    const EdgeInsets.symmetric(horizontal: 5),
+                                child: Row(
                                   children: [
                                     const Icon(
                                       Icons.phone,
@@ -172,18 +152,19 @@ class _OrgScreenState extends State<OrgScreen> {
               children: [
                 Container(
                     padding: const EdgeInsets.all(10.0),
-                    margin: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+                    margin:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20.0),
                         border: Border.all(color: Colors.grey),
                         color: Colors.grey.withOpacity(0.3)),
-                    child:  Text(
+                    child: Text(
                       widget.description,
                       style: const TextStyle(
-                          fontSize: 18,
-                          color: Colors.black,
-                          fontWeight: FontWeight.w200,
-                          letterSpacing: 2),
+                        fontSize: 18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w200,
+                      ),
                     )),
                 Padding(
                   padding: const EdgeInsets.only(left: 20, right: 20),
@@ -195,8 +176,8 @@ class _OrgScreenState extends State<OrgScreen> {
                           LaunchUrl("${widget.donationUrl}");
                         },
                         child: Container(
-                          height: size.height*0.06,
-                          width: size.width*0.4,
+                          height: size.height * 0.06,
+                          width: size.width * 0.4,
                           decoration: BoxDecoration(
                             color: kAccentGreen,
                             borderRadius: BorderRadius.circular(8),
@@ -222,8 +203,8 @@ class _OrgScreenState extends State<OrgScreen> {
                           LaunchUrl("${widget.websiteUrl}");
                         },
                         child: Container(
-                          height: size.height*0.06,
-                          width: size.width*0.4,
+                          height: size.height * 0.06,
+                          width: size.width * 0.4,
                           decoration: BoxDecoration(
                             color: kAccentYellow,
                             borderRadius: BorderRadius.circular(8),
@@ -272,23 +253,24 @@ class _OrgScreenState extends State<OrgScreen> {
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> group = snapshot.data!.docs[index]
-                                .data() as Map<String, dynamic>;
+                            Map<String, dynamic> group =
+                                snapshot.data!.docs[index].data()
+                                    as Map<String, dynamic>;
                             return orgCard(
                               NetworkImage(group['logo']),
-                                  () => Navigator.push(
+                              () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => OrgScreen(
-                                      banner: NetworkImage(group['banner']),
-                                      image: NetworkImage(group['logo']),
-                                      name: group['name'],
-                                      location: group['location'],
-                                      contact: group['contact'],
-                                      description: group['description'],
-                                      websiteUrl: group['website'],
-                                      donationUrl: group['donation'],
-                                    )),
+                                          banner: NetworkImage(group['banner']),
+                                          image: NetworkImage(group['logo']),
+                                          name: group['name'],
+                                          location: group['location'],
+                                          contact: group['contact'],
+                                          description: group['description'],
+                                          websiteUrl: group['website'],
+                                          donationUrl: group['donation'],
+                                        )),
                               ),
                             );
                           },
@@ -301,7 +283,6 @@ class _OrgScreenState extends State<OrgScreen> {
                 ),
               ],
             ),
-
           ],
         ));
   }

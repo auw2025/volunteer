@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/services/const.dart';
 import 'package:hapii/services/extras.dart';
 
-
 class volunteerScreen extends StatefulWidget {
   ImageProvider image;
   ImageProvider banner;
@@ -61,28 +60,8 @@ class _volunteerScreenState extends State<volunteerScreen> {
                     ),
                   ),
                 ),
-                // Container(
-                //   height: size.height * 0.2,
-                //   width: size.width,
-                //   decoration:  BoxDecoration(
-                //     gradient: LinearGradient(
-                //         begin: Alignment.center,
-                //         end: Alignment.bottomCenter,
-                //         colors: [
-                //           Colors.transparent,
-                //           Colors.white.withOpacity(0.1),
-                //           Colors.white.withOpacity(0.2),
-                //           Colors.white.withOpacity(0.3),
-                //           Colors.white.withOpacity(0.4),
-                //           Colors.white.withOpacity(0.5),
-                //           Colors.white.withOpacity(0.6),
-                //           Colors.white.withOpacity(0.7),
-                //           Colors.white.withOpacity(0.9),
-                //           Colors.white
-                //         ]),
-                //   ),
-                // ),
                 Container(
+                  margin: EdgeInsets.only(left: 20),
                   alignment: Alignment.topLeft,
                   width: size.width,
                   child: Column(
@@ -93,18 +72,17 @@ class _volunteerScreenState extends State<volunteerScreen> {
                       Container(
                         height: size.height * 0.1,
                         width: size.height * 0.1,
-                        margin: const EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
                             image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: widget.image ,
+                              image: widget.image,
                             ),
-                            border: Border.all(color: Colors.black, width: 2),
+                            border: Border.all(
+                                color: Colors.black.withOpacity(0.2), width: 1),
                             borderRadius:
-                            BorderRadius.circular(size.height * 0.05)),
+                                BorderRadius.circular(size.height * 0.05)),
                       ),
                       Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 10),
                         child: Text(
                           widget.name,
                           style: const TextStyle(
@@ -116,55 +94,47 @@ class _volunteerScreenState extends State<volunteerScreen> {
                           maxLines: 2,
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 10,top :10),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              margin:
-                              const EdgeInsets.symmetric(horizontal: 5),
-                              child:  Row(
-                                children: [
-                                  const Icon(
-                                    Icons.location_on_outlined,
-                                    size: 22,
-                                    color: Colors.black,
-                                  ),
-                                  Text(
-                                    widget.location,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.location_on_outlined,
+                                size: 22,
+                                color: Colors.black,
                               ),
-                            ),
-                            Container(
-                              margin:
-                              const EdgeInsets.symmetric(horizontal: 5),
-                              child:  Row(
-                                children: [
-                                  const Icon(
-                                    Icons.phone,
-                                    size: 20,
-                                    color: Colors.black,
-                                  ),
-                                  Text(
-                                    widget.contact,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                widget.location,
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
+                            ],
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 5),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.phone,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  widget.contact,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -173,18 +143,18 @@ class _volunteerScreenState extends State<volunteerScreen> {
             ),
           ),
           Container(
-              padding: const EdgeInsets.all(10.0),
-              margin: const EdgeInsets.only(left: 20,right: 20,bottom: 20),
+              padding: const EdgeInsets.all(8.0),
+              margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
                   border: Border.all(color: Colors.grey),
-                  color: Colors.grey.withOpacity(0.3)),
-              child:  Text(
+                  color: Colors.grey.withOpacity(0.2)),
+              child: Text(
                 widget.description,
                 style: GoogleFonts.inter(
-                    fontSize: 18,
-                    color: Colors.black,
-                    ),
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
               )),
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
@@ -196,8 +166,8 @@ class _volunteerScreenState extends State<volunteerScreen> {
                     LaunchUrl("${widget.donationUrl}");
                   },
                   child: Container(
-                    height: size.height*0.06,
-                    width: size.width*0.4,
+                    height: size.height * 0.06,
+                    width: size.width * 0.4,
                     decoration: BoxDecoration(
                       color: kAccentGreen,
                       borderRadius: BorderRadius.circular(8),
@@ -223,8 +193,8 @@ class _volunteerScreenState extends State<volunteerScreen> {
                     LaunchUrl("${widget.websiteUrl}");
                   },
                   child: Container(
-                    height: size.height*0.06,
-                    width: size.width*0.4,
+                    height: size.height * 0.06,
+                    width: size.width * 0.4,
                     decoration: BoxDecoration(
                       color: kAccentYellow,
                       borderRadius: BorderRadius.circular(8),
@@ -273,26 +243,27 @@ class _volunteerScreenState extends State<volunteerScreen> {
                     timeInSecForIosWeb: 1,
                     backgroundColor: Colors.green.withOpacity(0.8),
                     textColor: Colors.white,
-                    fontSize: 16.0
-                );
+                    fontSize: 16.0);
               });
-              FirebaseFirestore.instance.collection("Users")
+              FirebaseFirestore.instance
+                  .collection("Users")
                   .doc(FirebaseAuth.instance.currentUser!.uid)
                   .update({
-                'volunteer': FieldValue.arrayUnion([
-                  (widget.name)
-                ])
-              }
-              );
-              FirebaseFirestore.instance.collection("volunteer")
-                  .doc(widget.name).collection('appliedvolunteer').doc(FirebaseAuth.instance.currentUser!.email).set({
+                'volunteer': FieldValue.arrayUnion([(widget.name)])
+              });
+              FirebaseFirestore.instance
+                  .collection("volunteer")
+                  .doc(widget.name)
+                  .collection('appliedvolunteer')
+                  .doc(FirebaseAuth.instance.currentUser!.email)
+                  .set({
                 'name': FirebaseAuth.instance.currentUser!.displayName,
                 'photo': FirebaseAuth.instance.currentUser!.photoURL,
                 'gmail': FirebaseAuth.instance.currentUser!.email,
               });
             },
             child: Container(
-              margin: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
               height: 55,
               width: size.width,
               decoration: BoxDecoration(
@@ -305,7 +276,7 @@ class _volunteerScreenState extends State<volunteerScreen> {
               ),
               child: Center(
                 child: Text(
-                  apply? "Apply Now":"Applied",
+                  apply ? "Apply Now" : "Applied",
                   style: GoogleFonts.inter(
                     color: Color(0xFF59241D),
                     fontSize: 20,
@@ -323,7 +294,7 @@ class _volunteerScreenState extends State<volunteerScreen> {
             child: Container(
               height: 55,
               width: size.width,
-              margin: EdgeInsets.symmetric(horizontal: 20,vertical: 4),
+              margin: EdgeInsets.symmetric(horizontal: 20, vertical: 4),
               decoration: BoxDecoration(
                 color: Color(0xFFBFD4ED),
                 borderRadius: BorderRadius.circular(8),
@@ -418,7 +389,9 @@ class _volunteerScreenState extends State<volunteerScreen> {
           //     return Container();
           //   }
           // }),
-          const SizedBox(height: 20,)
+          const SizedBox(
+            height: 20,
+          )
         ],
       ),
     );

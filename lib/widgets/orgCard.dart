@@ -11,7 +11,7 @@ Widget orgCard(ImageProvider image, ontap) {
         decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withOpacity(0.1),
                 spreadRadius: 0,
                 blurRadius: 4,
                 offset: const Offset(0, 4), // changes position of shadow
