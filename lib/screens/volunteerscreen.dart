@@ -114,24 +114,29 @@ class _volunteerScreenState extends State<volunteerScreen> {
                               ),
                             ],
                           ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 5),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.phone,
-                                  size: 20,
-                                  color: Colors.black,
-                                ),
-                                Text(
-                                  widget.contact,
-                                  style: const TextStyle(
+                          GestureDetector(
+                            onTap: () {
+                              LaunchUrl("tel:${widget.contact}");
+                            },
+                            child: Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 5),
+                              child: Row(
+                                children: [
+                                  const Icon(
+                                    Icons.phone,
+                                    size: 20,
                                     color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
                                   ),
-                                ),
-                              ],
+                                  Text(
+                                    widget.contact,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],

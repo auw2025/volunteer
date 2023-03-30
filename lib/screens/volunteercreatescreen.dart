@@ -27,10 +27,10 @@ class Volunteercreate extends StatelessWidget {
         title: Text(
           'Volunteer Form',
           style: GoogleFonts.inter(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-              letterSpacing: 2),
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ),
       body: Container(

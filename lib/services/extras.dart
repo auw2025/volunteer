@@ -8,7 +8,7 @@ Future<void> LaunchUrl(String url) async {
   }
 }
 
-void setReminder(String reminderText) {
+Future<void> setReminder(String reminderText) async {
   AndroidIntent intent = AndroidIntent(
     action: 'android.intent.action.VOICE_ASSIST',
     arguments: {'query': 'set a reminder $reminderText'},
