@@ -38,9 +38,9 @@ class LoginScreen extends StatelessWidget {
                       Container(
                         margin: const EdgeInsets.only(bottom: 16),
                         child: Text(
-                          "Hapii",
+                          "Tak Sun Volunteer Platform",
                           style: GoogleFonts.inter(
-                              fontSize: 64, fontWeight: FontWeight.w900),
+                              fontSize: 50, fontWeight: FontWeight.w900),
                         ),
                       ),
                       Container(

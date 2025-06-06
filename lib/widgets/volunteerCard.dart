@@ -16,6 +16,8 @@ class volunteerCard extends StatelessWidget {
   final String orgDescription;
   final String image;
   final String contact;
+  final bool isApplied;
+
   const volunteerCard({
     super.key,
     required this.contact,
@@ -27,6 +29,7 @@ class volunteerCard extends StatelessWidget {
     required this.date,
     required this.orgDescription,
     required this.website,
+    this.isApplied = false,
   });
 
   @override
@@ -48,120 +51,128 @@ class volunteerCard extends StatelessWidget {
               offset: const Offset(0, 4),
             )
           ]),
-      child: Column(children: [
-        Row(
-          children: [
-            Container(
-              height: 30,
-              decoration: BoxDecoration(
-                  color: kAccentGrey, borderRadius: BorderRadius.circular(15)),
-              child: Container(
-                margin: const EdgeInsets.only(left: 12, right: 12),
-                child: Row(
-                  children: [
-                    const Icon(
-                      UniconsLine.clock_five,
-                      size: 14,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text("Starts on $date"),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 5,
-            ),
-            Container(
-              height: 30,
-              decoration: BoxDecoration(
-                  color: kAccentGrey, borderRadius: BorderRadius.circular(50)),
-              child: Container(
-                margin: const EdgeInsets.only(left: 12, right: 12),
-                child: Row(
-                  children: [
-                    const Icon(
-                      UniconsLine.location_point,
-                      size: 14,
-                    ),
-                    const SizedBox(
-                      width: 4,
-                    ),
-                    Text(location),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 12, bottom: 12),
-          child: Row(
+      child: Column(
+        children: [
+          Row(
             children: [
               Container(
-                height: 75,
-                width: 75,
+                height: 30,
                 decoration: BoxDecoration(
-                  image: DecorationImage(image: NetworkImage(image)),
-                  borderRadius: BorderRadius.circular(10),
-                  color: Colors.amber,
+                    color: kAccentGrey,
+                    borderRadius: BorderRadius.circular(15)),
+                child: Container(
+                  margin: const EdgeInsets.only(left: 12, right: 12),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        UniconsLine.clock_five,
+                        size: 14,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text("Starts on $date"),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(
-                width: 10,
+                width: 5,
               ),
-              SizedBox(
-                height: 75,
-                width: size.width * 0.6,
-                child: Text(
-                  orgDescription,
-                  style: GoogleFonts.inter(
-                    fontSize: 12,
+              Container(
+                height: 30,
+                decoration: BoxDecoration(
+                    color: kAccentGrey,
+                    borderRadius: BorderRadius.circular(50)),
+                child: Container(
+                  margin: const EdgeInsets.only(left: 12, right: 12),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        UniconsLine.location_point,
+                        size: 14,
+                      ),
+                      const SizedBox(
+                        width: 4,
+                      ),
+                      Text(location),
+                    ],
                   ),
                 ),
               ),
             ],
           ),
-        ),
-        GestureDetector(
-          onTap: () {
-            HapticFeedback.lightImpact();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BottomNavBar(
-                    true,
-                    volunteerScreen(
-                      banner: NetworkImage("${banner}"),
-                      image: NetworkImage("${image}"),
-                      name: '${name}',
-                      location: '${location}',
-                      contact: '${contact}',
-                      description: "${orgDescription}",
-                      donationUrl: '${donation}',
-                      websiteUrl: '${website}',
-                      date: '${date}',
+          Container(
+            margin: const EdgeInsets.only(top: 12, bottom: 12),
+            child: Row(
+              children: [
+                Container(
+                  height: 75,
+                  width: 75,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(image: NetworkImage(image)),
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.amber,
+                  ),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                SizedBox(
+                  height: 75,
+                  width: size.width * 0.6,
+                  child: Text(
+                    orgDescription,
+                    style: GoogleFonts.inter(
+                      fontSize: 12,
                     ),
                   ),
-                ));
-          },
-          child: Container(
-            width: size.width,
-            height: 35,
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50), color: Colors.black),
-            child: Center(
-              child: Text(
-                "Apply to Volunteer",
-                style: GoogleFonts.inter(fontSize: 12, color: Colors.white),
-              ),
+                ),
+              ],
             ),
           ),
-        ),
-      ]),
+          // Only show the apply button if not applied
+          if (!isApplied)
+            GestureDetector(
+              onTap: () {
+                HapticFeedback.lightImpact();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BottomNavBar(
+                        true,
+                        volunteerScreen(
+                          banner: NetworkImage(banner),
+                          image: NetworkImage(image),
+                          name: name,
+                          location: location,
+                          contact: contact,
+                          description: orgDescription,
+                          donationUrl: donation,
+                          websiteUrl: website,
+                          date: date,
+                        ),
+                      ),
+                    ));
+              },
+              child: Container(
+                width: size.width,
+                height: 35,
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                    color: Colors.black),
+                child: Center(
+                  child: Text(
+                    "Apply to Volunteer",
+                    style: GoogleFonts.inter(
+                        fontSize: 12, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

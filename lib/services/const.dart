@@ -8,4 +8,4 @@ const Color kAccentYellow = Color(0xFFFFE7AB);
 
 // Strings
 const String description =
-    "Your platform for spreading\nhappiness through volunteering\nand donations";
+    "Your chance for choosing\nto help the\nPoor and Needy";

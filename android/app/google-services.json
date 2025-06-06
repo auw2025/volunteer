@@ -1,44 +1,26 @@
 {
   "project_info": {
-    "project_number": "337780887359",
-    "project_id": "hapii-59f0f",
-    "storage_bucket": "hapii-59f0f.appspot.com"
+    "project_number": "381330069791",
+    "project_id": "volunteer-service-728ab",
+    "storage_bucket": "volunteer-service-728ab.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:337780887359:android:016213566cee0bdf56cd8a",
+        "mobilesdk_app_id": "1:381330069791:android:b9c2105b28dac32256382a",
         "android_client_info": {
           "package_name": "io.hapii.hapii"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "337780887359-v5ho1j8nndisgmt4a8m4iun29tall926.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "io.hapii.hapii",
-            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
-          }
-        },
-        {
-          "client_id": "337780887359-anrj9dmk06qhv649pct4bkadpsj7ee4g.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyCRL08ftSbktcFZHt0kJcAevf7kzFcVxHk"
+          "current_key": "AIzaSyAva2_6vHNbhCxG7pz8z8nbF4i9yNrOFAM"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "337780887359-anrj9dmk06qhv649pct4bkadpsj7ee4g.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }
