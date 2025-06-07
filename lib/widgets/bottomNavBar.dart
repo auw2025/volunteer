@@ -36,6 +36,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
+    // Determine if the current route can go back
+    bool canPop = Navigator.canPop(context);
+
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: widget.replace ? widget.screen : _screens[_index],
@@ -47,6 +50,19 @@ class _BottomNavBarState extends State<BottomNavBar> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Left arrow button for going back; disabled if cannot pop
+            IconButton(
+              onPressed: canPop
+                  ? () {
+                      Navigator.pop(context);
+                    }
+                  : null,
+              icon: const Icon(
+                Icons.arrow_back,
+              ),
+              color: canPop ? Colors.white : Colors.grey,  // visually indicate disabled state
+            ),
+            // Home button
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
@@ -65,6 +81,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 color: _index == 0 ? kPrimaryBlack : Colors.white,
               ),
             ]),
+            // Group button
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
@@ -83,6 +100,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 color: _index == 1 ? kPrimaryBlack : Colors.white,
               ),
             ]),
+            // Search button
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
@@ -101,6 +119,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 color: _index == 2 ? kPrimaryBlack : Colors.white,
               ),
             ]),
+            // Profile button
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),

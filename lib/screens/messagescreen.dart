@@ -3,16 +3,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/services/const.dart';
+import 'package:hapii/widgets/bottomNavBar.dart';
 
 class GroupChatRoom extends StatefulWidget {
   final String groupChatId, groupName, groupImage;
 
-  GroupChatRoom(
-      {required this.groupName,
-      required this.groupChatId,
-      required this.groupImage,
-      Key? key})
-      : super(key: key);
+  GroupChatRoom({
+    required this.groupName,
+    required this.groupChatId,
+    required this.groupImage,
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<GroupChatRoom> createState() => _GroupChatRoomState();
@@ -20,9 +21,7 @@ class GroupChatRoom extends StatefulWidget {
 
 class _GroupChatRoomState extends State<GroupChatRoom> {
   final TextEditingController _message = TextEditingController();
-
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-
   final FirebaseAuth _auth = FirebaseAuth.instance;
   ScrollController _scrollController = ScrollController();
 
@@ -82,9 +81,12 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
+                    // Scroll to the bottom when new messages come in.
                     WidgetsBinding.instance.addPostFrameCallback((_) {
-                      _scrollController
-                          .jumpTo(_scrollController.position.maxScrollExtent);
+                      if (_scrollController.hasClients) {
+                        _scrollController.jumpTo(
+                            _scrollController.position.maxScrollExtent);
+                      }
                     });
                     return ListView.builder(
                       controller: _scrollController,
@@ -96,10 +98,10 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                         if (index == 0) {
                           return MessageTile(size, chatMap, 1);
                         } else {
-                          Map<String, dynamic> prevchatmap =
+                          Map<String, dynamic> prevChatMap =
                               snapshot.data!.docs[index - 1].data()
                                   as Map<String, dynamic>;
-                          if (prevchatmap['sendBy'] == chatMap['sendBy']) {
+                          if (prevChatMap['sendBy'] == chatMap['sendBy']) {
                             return MessageTile(size, chatMap, 0);
                           }
                           return MessageTile(size, chatMap, 1);
@@ -128,45 +130,57 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                     child: TextField(
                       controller: _message,
                       decoration: InputDecoration(
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          hintText: "Send Message",
-                          hintStyle: const TextStyle(
-                            color: Colors.black54,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w500,
-                          ),
-                          focusColor: kPrimaryBlack,
-                          border: OutlineInputBorder(
-                            borderSide: const BorderSide(color: Colors.black),
-                            borderRadius: BorderRadius.circular(5),
-                          )),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        hintText: "Send Message",
+                        hintStyle: const TextStyle(
+                          color: Colors.black54,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                        focusColor: kPrimaryBlack,
+                        border: OutlineInputBorder(
+                          borderSide:
+                              const BorderSide(color: Colors.black),
+                          borderRadius: BorderRadius.circular(5),
+                        ),
+                      ),
                     ),
                   ),
                   IconButton(
-                      icon: const Icon(Icons.send), onPressed: onSendMessage),
+                    icon: const Icon(Icons.send),
+                    onPressed: onSendMessage,
+                  ),
                 ],
               ),
             ),
           ],
         ),
       ),
+      // Adding the custom bottom navigation bar
+      bottomNavigationBar: BottomNavBar(
+        false,
+        widget,
+      ),
     );
   }
 
   Widget MessageTile(Size size, Map<String, dynamic> chatMap, int x) {
-    return Builder(builder: (_) {
-      if (chatMap['type'] == "text") {
-        return Container(
-          width: size.width * 0.8,
-          alignment: chatMap['sendBy'] == _auth.currentUser!.displayName
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
-          child: Container(
+    return Builder(
+      builder: (_) {
+        if (chatMap['type'] == "text") {
+          return Container(
+            width: size.width * 0.8,
+            alignment: chatMap['sendBy'] == _auth.currentUser!.displayName
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+            child: Container(
               width: size.width * 0.8,
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               margin: const EdgeInsets.symmetric(horizontal: 10),
               child: Column(
                 crossAxisAlignment:
@@ -186,51 +200,49 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                             textAlign: TextAlign.end,
                           ),
                         )
-                      : SizedBox(),
+                      : const SizedBox(),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 5, horizontal: 10),
                     decoration: const BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                       color: kAccentGreen,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Text(
-                            chatMap['message'],
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Text(
+                        chatMap['message'],
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black,
                         ),
-                      ],
+                      ),
                     ),
                   ),
                 ],
-              )),
-        );
-      } else if (chatMap['type'] == "img") {
-        return Container(
-          width: size.width,
-          alignment: chatMap['sendBy'] == _auth.currentUser!.displayName
-              ? Alignment.centerRight
-              : Alignment.centerLeft,
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-            height: size.height / 2,
-            child: Image.network(
-              chatMap['message'],
+              ),
             ),
-          ),
-        );
-      } else {
-        return const SizedBox();
-      }
-    });
+          );
+        } else if (chatMap['type'] == "img") {
+          return Container(
+            width: size.width,
+            alignment: chatMap['sendBy'] == _auth.currentUser!.displayName
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
+            child: Container(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+              height: size.height / 2,
+              child: Image.network(
+                chatMap['message'],
+              ),
+            ),
+          );
+        } else {
+          return const SizedBox();
+        }
+      },
+    );
   }
 }
