@@ -12,63 +12,78 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-        color: Colors.white,
-        height: size.height,
-        width: size.width,
-        child: Stack(
-          alignment: Alignment.bottomCenter,
-          children: [
-            SizedBox(
-              width: size.width,
+      color: Colors.white,
+      height: size.height,
+      width: size.width,
+      child: Stack(
+        alignment: Alignment.bottomCenter,
+        children: [
+          SizedBox(
+            width: size.width,
+            height: size.height,
+            child: Image.asset(
+              "assets/LoginBG.png",
+              fit: BoxFit.fill,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(45, (size.width - 300) / 2, 45, 100),
+            child: Container(
               height: size.height,
-              child: Image.asset(
-                "assets/LoginBG.png",
-                fit: BoxFit.fill,
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.fromLTRB(45, (size.width - 300) / 2, 45, 100),
-              child: Container(
-                height: size.height,
-                width: size.width,
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 16),
-                        child: Text(
-                          "Tak Sun Volunteer Platform",
-                          style: GoogleFonts.inter(
-                              fontSize: 50, fontWeight: FontWeight.w900),
+              width: size.width,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      "Tak Sun Volunteer Platform",
+                      style: GoogleFonts.inter(
+                        fontSize: 50, 
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    child: Text(
+                      description,
+                      style: GoogleFonts.inter(fontSize: 20),
+                    ),
+                  ),
+                  Container(
+                    width: 300,
+                    height: 48,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        final provider = Provider.of<GoogleSignInProvider>(
+                          context,
+                          listen: false,
+                        );
+                        // Passing context as an argument to googleLogin()
+                        provider.googleLogin(context);
+                      },
+                      icon: const Icon(FontAwesomeIcons.google),
+                      label: const Text("Sign In with Google"),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: kPrimaryBlack, // Button background
+                        foregroundColor: Colors.white, // Text and icon color
+                        textStyle: GoogleFonts.inter(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ).copyWith(
+                          inherit: true, // Ensuring the inherit property matches
                         ),
                       ),
-                      Container(
-                        margin: const EdgeInsets.only(bottom: 16),
-                        child: Text(
-                          description,
-                          style: GoogleFonts.inter(fontSize: 20),
-                        ),
-                      ),
-                      Container(
-                          width: 300,
-                          height: 48,
-                          child: ElevatedButton.icon(
-                            onPressed: () {
-                              final provider =
-                                  Provider.of<GoogleSignInProvider>(context,
-                                      listen: false);
-                              provider.googleLogin();
-                            },
-                            icon: const Icon(FontAwesomeIcons.google),
-                            label: const Text("Sign In with Google"),
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: kPrimaryBlack),
-                          )),
-                    ]),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 }
