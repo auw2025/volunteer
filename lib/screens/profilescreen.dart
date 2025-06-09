@@ -1,13 +1,16 @@
+// profile_screen.dart
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hapii/main.dart';
+
+// Adjust these imports to match your own structure.
+import 'package:hapii/main.dart';                // For NavScreen, if it’s here
 import 'package:hapii/screens/orgcreatescreen.dart';
 import 'package:hapii/screens/volunteercreatescreen.dart';
 import 'package:hapii/services/const.dart';
-
-import '../widgets/volunteerCard.dart';
+import 'package:hapii/widgets/volunteerCard.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -27,10 +30,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    User? firebaseUser = FirebaseAuth.instance.currentUser;
-    var size = MediaQuery.of(context).size;
+    // Get current user info
+    final User? firebaseUser = FirebaseAuth.instance.currentUser;
+    final size = MediaQuery.of(context).size;
 
-    // Stream to get the user document from Firestore which now includes the "role" field.
+    // Listen to the user's Firestore doc (includes "role" and "volunteer" array)
     final userDocStream = FirebaseFirestore.instance
         .collection("Users")
         .doc(firebaseUser!.uid)
@@ -58,29 +62,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return const Center(child: Text('Error loading user data'));
           }
 
-          // Retrieve user data from Firestore including the role field.
-          Map<String, dynamic>? userData = userSnapshot.data!.data();
-          String userRole = userData?['role'] ?? 'student'; // default to student if not set
+          // Retrieve user data from Firestore
+          final userData = userSnapshot.data!.data();
+          if (userData == null) {
+            return const Center(child: Text('No user data found'));
+          }
+
+          // Read user role
+          final String userRole = userData['role'] ?? 'student';
 
           return Center(
             child: Column(
               children: [
-                // Profile header section.
+                // ---------------------------
+                // Profile header section
+                // ---------------------------
                 Container(
-                  margin:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 20,
+                  ),
                   child: Row(
                     children: [
+                      // User’s profile photo
                       CircleAvatar(
                         radius: 50,
                         backgroundImage: NetworkImage(firebaseUser.photoURL!),
                       ),
                       const SizedBox(width: 16),
+
+                      // User’s basic info
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            firebaseUser.displayName!,
+                            firebaseUser.displayName ?? 'No display name',
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -88,14 +104,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            firebaseUser.email!,
+                            firebaseUser.email ?? 'No email',
                             style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w400,
                             ),
                           ),
                           const SizedBox(height: 8),
-                          // Optional logout button in the body for additional visibility
+
+                          // Additional logout button
                           TextButton(
                             onPressed: _logout,
                             child: Text(
@@ -106,19 +123,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ],
                   ),
                 ),
 
-                // Only display the buttons if the user role is "staff".
+                // ---------------------------
+                // Only show staff actions if userRole == "staff"
+                // ---------------------------
                 if (userRole == "staff") ...[
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Orgcreate()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Orgcreate()),
+                      );
                     },
                     child: Container(
                       height: 55,
@@ -146,8 +167,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 20),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Volunteercreate()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Volunteercreate()),
+                      );
                     },
                     child: Container(
                       height: 55,
@@ -175,7 +198,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(height: 20),
                 ],
 
-                // Applied Volunteer heading.
+                // ---------------------------
+                // Applied Volunteer heading
+                // ---------------------------
                 Container(
                   alignment: Alignment.centerLeft,
                   margin: const EdgeInsets.only(left: 20, top: 20),
@@ -189,44 +214,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
 
-                // Volunteer posts list.
+                // ---------------------------
+                // Show the user’s volunteer posts
+                // ---------------------------
                 Expanded(
                   child: MediaQuery.removePadding(
                     context: context,
                     removeTop: true,
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(),
-                      itemCount: (userData?['volunteer'] as List<dynamic>?)?.length ?? 0,
+                      // This reads the 'volunteer' array from userData.
+                      itemCount: (userData['volunteer'] as List<dynamic>?)?.length ?? 0,
                       itemBuilder: (context, index) {
-                        // Use a FutureBuilder to get details of each volunteer post.
+                        // We expect userData['volunteer'] to store volunteer doc IDs or unique names
+                        final volunteerId = (userData['volunteer'] as List)[index];
+
+                        // Use a FutureBuilder to fetch each volunteer doc
                         return FutureBuilder<DocumentSnapshot>(
                           future: FirebaseFirestore.instance
                               .collection('volunteer')
-                              .doc((userData?['volunteer'] as List)[index].toString())
+                              .doc(volunteerId.toString())
                               .get(),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              return const CircularProgressIndicator();
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const Center(child: CircularProgressIndicator());
                             }
-                            if (snapshot.hasData && snapshot.data!.exists) {
-                              Map<String, dynamic>? volunteerDetails =
-                                  snapshot.data?.data() as Map<String, dynamic>?;
-                              return volunteerCard(
-                                // Pass isApplied true so that the apply button is removed.
-                                isApplied: true,
-                                image: volunteerDetails?['logo'] ?? '',
-                                location: volunteerDetails?['location'] ?? '',
-                                date: volunteerDetails?['date'] ?? '',
-                                orgDescription:
-                                    volunteerDetails?['description'] ?? '',
-                                contact: volunteerDetails?['contact'] ?? '',
-                                name: volunteerDetails?['name'] ?? '',
-                                banner: volunteerDetails?['banner'] ?? '',
-                                donation: volunteerDetails?['donation'] ?? '',
-                                website: volunteerDetails?['website'] ?? '',
-                              );
-                            } else {
+                            if (!snapshot.hasData || !snapshot.data!.exists) {
                               return Container(
                                 padding: const EdgeInsets.all(16),
                                 child: const Text(
@@ -235,6 +248,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               );
                             }
+
+                            // If doc found, build the volunteerCard
+                            final volunteerDetails =
+                                snapshot.data!.data() as Map<String, dynamic>?;
+
+                            return volunteerCard(
+                              isApplied: true, // hide "Apply to Volunteer" button
+                              name: volunteerDetails?['name'] ?? 'Unknown Name',
+                              image: volunteerDetails?['logo'] ?? '',
+                              banner: volunteerDetails?['banner'] ?? '',
+                              location: volunteerDetails?['location'] ?? '',
+                              date: volunteerDetails?['date'] ?? '',
+                              orgDescription: volunteerDetails?['description'] ?? '',
+                              contact: volunteerDetails?['contact'] ?? '',
+                              donation: volunteerDetails?['donation'] ?? '',
+                              website: volunteerDetails?['website'] ?? '',
+                            );
                           },
                         );
                       },
