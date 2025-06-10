@@ -15,19 +15,23 @@ class HomeScreen extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     FirebaseFirestore data = FirebaseFirestore.instance;
     return Scaffold(
-        backgroundColor: kPrimaryBG,
-        body: SafeArea(
+      backgroundColor: kPrimaryBG,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 20), // Adjust this value as needed
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
                 margin: const EdgeInsets.only(left: 8, right: 8, top: 8),
-                child: Text("Featured organizations",
-                    style: GoogleFonts.inter(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                    )),
+                child: Text(
+                  "Featured organizations",
+                  style: GoogleFonts.inter(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
               Container(
                 height: 115,
@@ -41,25 +45,26 @@ class HomeScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
-                          Map<String, dynamic> mapdata =
-                              snapshot.data!.docs[index].data();
+                          Map<String, dynamic> mapdata = snapshot.data!.docs[index].data();
                           return orgCard(
                             NetworkImage(mapdata['logo']),
                             () => Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => BottomNavBar(
-                                      true,
-                                      OrgScreen(
-                                        banner: NetworkImage(mapdata['banner']),
-                                        image: NetworkImage(mapdata['logo']),
-                                        name: mapdata['name'],
-                                        location: mapdata['location'],
-                                        contact: mapdata['contact'],
-                                        description: mapdata['description'],
-                                        websiteUrl: mapdata['website'],
-                                        donationUrl: mapdata['donation'],
-                                      ))),
+                                builder: (context) => BottomNavBar(
+                                  true,
+                                  OrgScreen(
+                                    banner: NetworkImage(mapdata['banner']),
+                                    image: NetworkImage(mapdata['logo']),
+                                    name: mapdata['name'],
+                                    location: mapdata['location'],
+                                    contact: mapdata['contact'],
+                                    description: mapdata['description'],
+                                    websiteUrl: mapdata['website'],
+                                    donationUrl: mapdata['donation'],
+                                  ),
+                                ),
+                              ),
                             ),
                           );
                         },
@@ -76,17 +81,17 @@ class HomeScreen extends StatelessWidget {
                               height: 100,
                               margin: const EdgeInsets.only(right: 8),
                               decoration: BoxDecoration(
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.5),
-                                      spreadRadius: 0,
-                                      blurRadius: 4,
-                                      offset: const Offset(
-                                          0, 4), // changes position of shadow
-                                    ),
-                                  ],
-                                  color: Colors.grey,
-                                  borderRadius: BorderRadius.circular(8)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.5),
+                                    spreadRadius: 0,
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 4),
+                                  ),
+                                ],
+                                color: Colors.grey,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           );
                         },
@@ -97,49 +102,53 @@ class HomeScreen extends StatelessWidget {
               ),
               Container(
                 margin: const EdgeInsets.only(left: 8, right: 8),
-                child: Text("Get Involved",
-                    style: GoogleFonts.inter(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w500,
-                    )),
+                child: Text(
+                  "Get Involved",
+                  style: GoogleFonts.inter(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
               Expanded(
                 child: MediaQuery.removePadding(
                   context: context,
                   removeTop: true,
                   child: StreamBuilder(
-                      stream: data.collection("volunteer").snapshots(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return ListView.builder(
-                            physics: const BouncingScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (context, index) {
-                              Map<String, dynamic> mapdata =
-                                  snapshot.data!.docs[index].data();
-                              return volunteerCard(
-                                image: mapdata['logo'],
-                                location: mapdata['location'],
-                                date: mapdata['date'],
-                                orgDescription: mapdata['description'],
-                                contact: mapdata['contact'],
-                                name: mapdata['name'],
-                                banner: mapdata['banner'],
-                                donation: mapdata['donation'],
-                                website: mapdata['website'],
-                              );
-                            },
-                          );
-                        } else {
-                          return Container();
-                        }
-                      }),
+                    stream: data.collection("volunteer").snapshots(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.vertical,
+                          itemCount: snapshot.data!.docs.length,
+                          itemBuilder: (context, index) {
+                            Map<String, dynamic> mapdata = snapshot.data!.docs[index].data();
+                            return volunteerCard(
+                              image: mapdata['logo'],
+                              location: mapdata['location'],
+                              date: mapdata['date'],
+                              orgDescription: mapdata['description'],
+                              contact: mapdata['contact'],
+                              name: mapdata['name'],
+                              banner: mapdata['banner'],
+                              donation: mapdata['donation'],
+                              website: mapdata['website'],
+                            );
+                          },
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                  ),
                 ),
               ),
             ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
