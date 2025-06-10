@@ -50,6 +50,7 @@ dependencies:
   auto_size_text_field: ^2.2.1
   fluttertoast: ^8.2.1
   flutter_launcher_icons: ^0.14.3
+  table_calendar: ^3.2.0
 
 
 dev_dependencies:

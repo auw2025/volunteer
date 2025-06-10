@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hapii/screens/homescreen.dart';
 import 'package:hapii/screens/profilescreen.dart';
-import 'package:hapii/screens/searchscreen.dart';
+import 'package:hapii/screens/calendarscreen.dart'; // Updated import
 import 'package:hapii/services/const.dart';
 import 'package:unicons/unicons.dart';
 
@@ -18,10 +18,10 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _index = 0;
 
-  // Removed Groupscreen from the list
+  // Updated list of screens: index 1 now directs to CalendarScreen.
   final List<Widget> _screens = [
     const HomeScreen(),
-    const SearchScreen(),
+    CalendarScreen(), // Replaced SearchScreen with CalendarScreen.
     const ProfileScreen(),
   ];
 
@@ -80,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 color: _index == 0 ? kPrimaryBlack : Colors.white,
               ),
             ]),
-            // Search button (now index 1 after removal of group button)
+            // Calendar button (index 1) replacing search icon
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
@@ -95,11 +95,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 onPressed: () {
                   onTabTapped(1);
                 },
-                icon: const Icon(UniconsLine.search),
+                icon: const Icon(UniconsLine.calendar_alt),
                 color: _index == 1 ? kPrimaryBlack : Colors.white,
               ),
             ]),
-            // Profile button (now index 2 after removal of group button)
+            // Profile button (index 2)
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
