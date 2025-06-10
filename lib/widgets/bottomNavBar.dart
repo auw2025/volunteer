@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hapii/screens/groupscreen.dart';
 import 'package:hapii/screens/homescreen.dart';
 import 'package:hapii/screens/profilescreen.dart';
 import 'package:hapii/screens/searchscreen.dart';
@@ -19,9 +18,9 @@ class BottomNavBar extends StatefulWidget {
 class _BottomNavBarState extends State<BottomNavBar> {
   int _index = 0;
 
+  // Removed Groupscreen from the list
   final List<Widget> _screens = [
     const HomeScreen(),
-    const Groupscreen(),
     const SearchScreen(),
     const ProfileScreen(),
   ];
@@ -38,8 +37,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
   Widget build(BuildContext context) {
     // Determine if the current route can go back
     bool canPop = Navigator.canPop(context);
-
     var size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: widget.replace ? widget.screen : _screens[_index],
       bottomNavigationBar: Container(
@@ -60,9 +59,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
               icon: const Icon(
                 Icons.arrow_back,
               ),
-              color: canPop ? Colors.white : Colors.grey,  // visually indicate disabled state
+              color: canPop ? Colors.white : Colors.grey, // visually indicate disabled state
             ),
-            // Home button
+            // Home button (index 0)
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
@@ -81,7 +80,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 color: _index == 0 ? kPrimaryBlack : Colors.white,
               ),
             ]),
-            // Group button
+            // Search button (now index 1 after removal of group button)
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
@@ -96,11 +95,11 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 onPressed: () {
                   onTabTapped(1);
                 },
-                icon: const Icon(UniconsLine.chat),
+                icon: const Icon(UniconsLine.search),
                 color: _index == 1 ? kPrimaryBlack : Colors.white,
               ),
             ]),
-            // Search button
+            // Profile button (now index 2 after removal of group button)
             Stack(alignment: Alignment.center, children: [
               AnimatedContainer(
                 duration: const Duration(milliseconds: 100),
@@ -115,27 +114,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
                 onPressed: () {
                   onTabTapped(2);
                 },
-                icon: const Icon(UniconsLine.search),
-                color: _index == 2 ? kPrimaryBlack : Colors.white,
-              ),
-            ]),
-            // Profile button
-            Stack(alignment: Alignment.center, children: [
-              AnimatedContainer(
-                duration: const Duration(milliseconds: 100),
-                height: 32,
-                width: _index == 3 ? 64 : 0,
-                decoration: BoxDecoration(
-                  color: kAccentGreen,
-                  borderRadius: BorderRadius.circular(51),
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  onTabTapped(3);
-                },
                 icon: const Icon(UniconsLine.user),
-                color: _index == 3 ? kPrimaryBlack : Colors.white,
+                color: _index == 2 ? kPrimaryBlack : Colors.white,
               ),
             ]),
           ],
