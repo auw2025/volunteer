@@ -34,261 +34,271 @@ class OrgScreen extends StatefulWidget {
 class _OrgScreenState extends State<OrgScreen> {
   @override
   Widget build(BuildContext context) {
-    FirebaseFirestore logo = FirebaseFirestore.instance;
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
     var size = MediaQuery.of(context).size;
     return Scaffold(
-        backgroundColor: kPrimaryBG,
-        extendBody: true,
-        body: ListView(
-          padding: const EdgeInsets.only(bottom: 20),
-          children: [
-            SizedBox(
-              height: size.height * 0.35,
-              width: size.width,
-              child: Stack(
-                children: [
-                  Container(
-                    height: size.height * 0.2,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: widget.banner,
-                      ),
+      backgroundColor: kPrimaryBG,
+      extendBody: true,
+      body: ListView(
+        padding: const EdgeInsets.only(bottom: 20),
+        children: [
+          SizedBox(
+            height: size.height * 0.35,
+            width: size.width,
+            child: Stack(
+              children: [
+                Container(
+                  height: size.height * 0.2,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: widget.banner,
                     ),
                   ),
-                  Container(
-                    alignment: Alignment.topLeft,
-                    width: size.width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(height: size.height * 0.15),
-                        Container(
-                          height: size.height * 0.1,
-                          width: size.height * 0.1,
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: widget.image,
-                              ),
-                              border: Border.all(
-                                  color: Colors.black.withOpacity(0.2),
-                                  width: 1),
-                              borderRadius:
-                                  BorderRadius.circular(size.height * 0.05)),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Text(
-                            widget.name,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 26,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
+                ),
+                Container(
+                  alignment: Alignment.topLeft,
+                  width: size.width,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(height: size.height * 0.15),
+                      Container(
+                        height: size.height * 0.1,
+                        width: size.height * 0.1,
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: widget.image,
                           ),
+                          border: Border.all(
+                            color: Colors.black.withOpacity(0.2),
+                            width: 1,
+                          ),
+                          borderRadius:
+                              BorderRadius.circular(size.height * 0.05),
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 20, top: 10),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
+                      ),
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Text(
+                          widget.name,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 26,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                        ),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 20, top: 10),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  size: 22,
+                                  color: Colors.black,
+                                ),
+                                Text(
+                                  widget.location,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                LaunchUrl("tel:${widget.contact}");
+                              },
+                              child: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 5),
                                 child: Row(
                                   children: [
                                     const Icon(
-                                      Icons.location_on_outlined,
-                                      size: 22,
+                                      Icons.phone,
+                                      size: 20,
                                       color: Colors.black,
                                     ),
                                     Text(
-                                      widget.location,
+                                      widget.contact,
                                       style: const TextStyle(
                                         color: Colors.black,
-                                        fontSize: 20,
+                                        fontSize: 18,
                                         fontWeight: FontWeight.w400,
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  LaunchUrl("tel:${widget.contact}");
-                                },
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(horizontal: 5),
-                                  child: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.phone,
-                                        size: 20,
-                                        color: Colors.black,
-                                      ),
-                                      Text(
-                                        widget.contact,
-                                        style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                    padding: const EdgeInsets.all(10.0),
-                    margin:
-                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20.0),
-                        border: Border.all(color: Colors.grey),
-                        color: Colors.grey.withOpacity(0.3)),
-                    child: Text(
-                      widget.description,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w200,
-                      ),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          LaunchUrl("${widget.donationUrl}");
-                        },
-                        child: Container(
-                          height: size.height * 0.06,
-                          width: size.width * 0.4,
-                          decoration: BoxDecoration(
-                            color: kAccentGreen,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: const Color(0xFF35591D),
-                              width: 1,
                             ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Donate",
-                              style: GoogleFonts.inter(
-                                color: const Color(0xFF35591D),
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          LaunchUrl("${widget.websiteUrl}");
-                        },
-                        child: Container(
-                          height: size.height * 0.06,
-                          width: size.width * 0.4,
-                          decoration: BoxDecoration(
-                            color: kAccentYellow,
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: const Color(0xFF53441D),
-                              width: 1,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              "Website",
-                              style: GoogleFonts.inter(
-                                color: const Color(0xFF53441D),
-                                fontSize: 20,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ),
+                          ],
                         ),
                       ),
                     ],
                   ),
                 ),
-                Container(
-                  width: double.infinity,
-                  margin: const EdgeInsets.only(left: 20, top: 20),
-                  child: Text(
-                    'Other Organizations',
-                    style: GoogleFonts.inter(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    textAlign: TextAlign.start,
-                  ),
-                ),
-                Container(
-                  height: 115,
-                  margin: const EdgeInsets.fromLTRB(20, 8, 0, 8),
-                  child: StreamBuilder(
-                    stream: logo.collection("community").snapshots(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          physics: const BouncingScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: snapshot.data!.docs.length,
-                          itemBuilder: (context, index) {
-                            Map<String, dynamic> group =
-                                snapshot.data!.docs[index].data()
-                                    as Map<String, dynamic>;
-                            return orgCard(
-                              NetworkImage(group['logo']),
-                              () => Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => OrgScreen(
-                                          banner: NetworkImage(group['banner']),
-                                          image: NetworkImage(group['logo']),
-                                          name: group['name'],
-                                          location: group['location'],
-                                          contact: group['contact'],
-                                          description: group['description'],
-                                          websiteUrl: group['website'],
-                                          donationUrl: group['donation'],
-                                        )),
-                              ),
-                            );
-                          },
-                        );
-                      } else {
-                        return Container();
-                      }
-                    },
-                  ),
-                ),
               ],
             ),
-          ],
-        ));
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10.0),
+                margin:
+                    const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0),
+                  border: Border.all(color: Colors.grey),
+                  color: Colors.grey.withOpacity(0.3),
+                ),
+                child: Text(
+                  widget.description,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w200,
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        LaunchUrl(widget.donationUrl);
+                      },
+                      child: Container(
+                        height: size.height * 0.06,
+                        width: size.width * 0.4,
+                        decoration: BoxDecoration(
+                          color: kAccentGreen,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: const Color(0xFF35591D),
+                            width: 1,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Donate",
+                            style: GoogleFonts.inter(
+                              color: const Color(0xFF35591D),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        LaunchUrl(widget.websiteUrl);
+                      },
+                      child: Container(
+                        height: size.height * 0.06,
+                        width: size.width * 0.4,
+                        decoration: BoxDecoration(
+                          color: kAccentYellow,
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: const Color(0xFF53441D),
+                            width: 1,
+                          ),
+                        ),
+                        child: Center(
+                          child: Text(
+                            "Website",
+                            style: GoogleFonts.inter(
+                              color: const Color(0xFF53441D),
+                              fontSize: 20,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(left: 20, top: 20),
+                child: Text(
+                  'Other Organizations',
+                  style: GoogleFonts.inter(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.w400,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+              Container(
+                height: 115,
+                margin: const EdgeInsets.fromLTRB(20, 8, 0, 8),
+                child: StreamBuilder(
+                  stream: firestore.collection("community").snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      // Filter out the current organization from the list.
+                      List<DocumentSnapshot> docs = snapshot.data!.docs.where((doc) {
+                        Map<String, dynamic> group =
+                            doc.data() as Map<String, dynamic>;
+                        return group['name'] != widget.name;
+                      }).toList();
+                      
+                      return ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: docs.length,
+                        itemBuilder: (context, index) {
+                          Map<String, dynamic> group =
+                              docs[index].data() as Map<String, dynamic>;
+                          return orgCard(
+                            NetworkImage(group['logo']),
+                            () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OrgScreen(
+                                  banner: NetworkImage(group['banner']),
+                                  image: NetworkImage(group['logo']),
+                                  name: group['name'],
+                                  location: group['location'],
+                                  contact: group['contact'],
+                                  description: group['description'],
+                                  websiteUrl: group['website'],
+                                  donationUrl: group['donation'],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Container();
+                    }
+                  },
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

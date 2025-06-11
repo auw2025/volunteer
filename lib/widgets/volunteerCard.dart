@@ -175,7 +175,7 @@ class volunteerCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    "Apply to Volunteer",
+                    "More Details",
                     style: GoogleFonts.inter(
                       fontSize: 12,
                       color: Colors.white,
