@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/screens/orgscreen.dart';
 import 'package:hapii/services/const.dart';
 import 'package:hapii/widgets/bottomNavBar.dart';
-import 'package:hapii/widgets/orgCard.dart';
 import 'package:hapii/widgets/volunteerCard.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -34,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                height: 115,
+                height: 140, // increased height to account for the text below the logo
                 margin: const EdgeInsets.fromLTRB(16, 8, 0, 8),
                 child: StreamBuilder(
                   stream: data.collection("community").snapshots(),
@@ -45,31 +44,82 @@ class HomeScreen extends StatelessWidget {
                         scrollDirection: Axis.horizontal,
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
-                          Map<String, dynamic> mapdata = snapshot.data!.docs[index].data();
-                          return orgCard(
-                            NetworkImage(mapdata['logo']),
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => BottomNavBar(
-                                  true,
-                                  OrgScreen(
-                                    banner: NetworkImage(mapdata['banner']),
-                                    image: NetworkImage(mapdata['logo']),
-                                    name: mapdata['name'],
-                                    location: mapdata['location'],
-                                    contact: mapdata['contact'],
-                                    description: mapdata['description'],
-                                    websiteUrl: mapdata['website'],
-                                    donationUrl: mapdata['donation'],
+                          Map<String, dynamic> mapdata =
+                              snapshot.data!.docs[index].data();
+                              
+                          // Use null-aware operators providing defaults if fields are null.
+                          String logoUrl = mapdata['logo'] ?? 'https://via.placeholder.com/100';
+                          String nickname = mapdata['nickname'] ?? 'No Nickname';
+                          String bannerUrl = mapdata['banner'] ?? '';
+                          String name = mapdata['name'] ?? '';
+                          String location = mapdata['location'] ?? '';
+                          String contact = mapdata['contact'] ?? '';
+                          String description = mapdata['description'] ?? '';
+                          String website = mapdata['website'] ?? '';
+                          String donation = mapdata['donation'] ?? '';
+
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 8),
+                            child: GestureDetector(
+                              onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => BottomNavBar(
+                                    true,
+                                    OrgScreen(
+                                      banner: NetworkImage(bannerUrl),
+                                      image: NetworkImage(logoUrl),
+                                      name: name,
+                                      location: location,
+                                      contact: contact,
+                                      description: description,
+                                      websiteUrl: website,
+                                      donationUrl: donation,
+                                    ),
                                   ),
                                 ),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  // Organisation logo container.
+                                  Container(
+                                    width: 100,
+                                    height: 100,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(logoUrl),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withOpacity(0.5),
+                                          spreadRadius: 0,
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  // Organisation nickname.
+                                  Text(
+                                    nickname,
+                                    style: GoogleFonts.inter(
+                                      color: Colors.black,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
                         },
                       );
                     } else {
+                      // Display a loading view while data is being loaded.
                       return ListView.builder(
                         physics: const BouncingScrollPhysics(),
                         scrollDirection: Axis.horizontal,
@@ -124,17 +174,18 @@ class HomeScreen extends StatelessWidget {
                           scrollDirection: Axis.vertical,
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> mapdata = snapshot.data!.docs[index].data();
+                            Map<String, dynamic> mapdata =
+                                snapshot.data!.docs[index].data();
                             return volunteerCard(
-                              image: mapdata['logo'],
-                              location: mapdata['location'],
-                              date: mapdata['date'],
-                              orgDescription: mapdata['description'],
-                              contact: mapdata['contact'],
-                              name: mapdata['name'],
-                              banner: mapdata['banner'],
-                              donation: mapdata['donation'],
-                              website: mapdata['website'],
+                              image: mapdata['logo'] ?? 'https://via.placeholder.com/100',
+                              location: mapdata['location'] ?? 'No location',
+                              date: mapdata['date'] ?? 'No date',
+                              orgDescription: mapdata['description'] ?? 'No description',
+                              contact: mapdata['contact'] ?? '',
+                              name: mapdata['name'] ?? '',
+                              banner: mapdata['banner'] ?? '',
+                              donation: mapdata['donation'] ?? '',
+                              website: mapdata['website'] ?? '',
                             );
                           },
                         );
