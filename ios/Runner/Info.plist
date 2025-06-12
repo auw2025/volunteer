@@ -41,6 +41,8 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>UIStatusBarStyle</key>
+	<string></string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -56,5 +58,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<!-- Add your Google Maps API key below -->
+	<key>GMSApiKey</key>
+	<string>AIzaSyBOIFWToEgV0PEg-yFV1i4abGBZJ5G2ufs</string>
 </dict>
 </plist>

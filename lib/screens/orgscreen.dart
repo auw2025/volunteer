@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hapii/services/const.dart';
 import 'package:hapii/services/extras.dart';
 import 'package:hapii/widgets/bottomNavBar.dart';
@@ -233,7 +234,37 @@ class _OrgScreenState extends State<OrgScreen> {
                   ],
                 ),
               ),
-              // Removed the "Other Organizations" section.
+              // New "Location" section with Google Map
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                child: Text(
+                  "Location",
+                  style: GoogleFonts.inter(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20),
+                height: 200,
+                child: GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: LatLng(22.302711, 114.177216), // dummy coordinate
+                    zoom: 12,
+                  ),
+                  markers: {
+                    Marker(
+                      markerId: MarkerId('orgLocation'),
+                      position: LatLng(22.302711, 114.177216),
+                      infoWindow: InfoWindow(title: widget.name),
+                    ),
+                  },
+                  // Optionally, you can enable other options such as onMapCreated, etc.
+                ),
+              ),
             ],
           ),
         ],
