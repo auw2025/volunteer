@@ -8,25 +8,28 @@ import 'package:hapii/widgets/bottomNavBar.dart';
 import 'package:hapii/widgets/orgCard.dart';
 
 class OrgScreen extends StatefulWidget {
-  OrgScreen(
-      {Key? key,
-      required this.image,
-      required this.name,
-      required this.banner,
-      required this.location,
-      required this.contact,
-      required this.description,
-      required this.donationUrl,
-      required this.websiteUrl})
-      : super(key: key);
-  ImageProvider image;
-  ImageProvider banner;
-  String name;
-  String location;
-  String contact;
-  String description;
-  String donationUrl;
-  String websiteUrl;
+  OrgScreen({
+    Key? key,
+    required this.image,
+    required this.name,
+    required this.banner,
+    required this.location,
+    required this.contact,
+    required this.description,
+    required this.donationUrl,
+    required this.websiteUrl,
+    required this.latlng,  // added parameter for latlng from Firestore (GeoPoint)
+  }) : super(key: key);
+
+  final ImageProvider image;
+  final ImageProvider banner;
+  final String name;
+  final String location;
+  final String contact;
+  final String description;
+  final String donationUrl;
+  final String websiteUrl;
+  final GeoPoint latlng; // Firestore GeoPoint
 
   @override
   State<OrgScreen> createState() => _OrgScreenState();
@@ -37,6 +40,11 @@ class _OrgScreenState extends State<OrgScreen> {
   Widget build(BuildContext context) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     var size = MediaQuery.of(context).size;
+
+    // Convert Firestore GeoPoint to Google Maps LatLng
+    final LatLng orgLatLng =
+        LatLng(widget.latlng.latitude, widget.latlng.longitude);
+
     return Scaffold(
       backgroundColor: kPrimaryBG,
       extendBody: true,
@@ -78,8 +86,7 @@ class _OrgScreenState extends State<OrgScreen> {
                             color: Colors.black.withOpacity(0.2),
                             width: 1,
                           ),
-                          borderRadius:
-                              BorderRadius.circular(size.height * 0.05),
+                          borderRadius: BorderRadius.circular(size.height * 0.05),
                         ),
                       ),
                       Container(
@@ -121,8 +128,7 @@ class _OrgScreenState extends State<OrgScreen> {
                                 LaunchUrl("tel:${widget.contact}");
                               },
                               child: Container(
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 5),
+                                margin: const EdgeInsets.symmetric(horizontal: 5),
                                 child: Row(
                                   children: [
                                     const Icon(
@@ -156,8 +162,7 @@ class _OrgScreenState extends State<OrgScreen> {
             children: [
               Container(
                 padding: const EdgeInsets.all(10.0),
-                margin:
-                    const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.0),
                   border: Border.all(color: Colors.grey),
@@ -252,17 +257,17 @@ class _OrgScreenState extends State<OrgScreen> {
                 height: 200,
                 child: GoogleMap(
                   initialCameraPosition: CameraPosition(
-                    target: LatLng(22.302711, 114.177216), // dummy coordinate
-                    zoom: 12,
+                    target: orgLatLng,
+                    zoom: 15,
                   ),
                   markers: {
                     Marker(
-                      markerId: MarkerId('orgLocation'),
-                      position: LatLng(22.302711, 114.177216),
+                      markerId: const MarkerId('orgLocation'),
+                      position: orgLatLng,
                       infoWindow: InfoWindow(title: widget.name),
                     ),
                   },
-                  // Optionally, you can enable other options such as onMapCreated, etc.
+                  // Optionally, you can enable additional options such as onMapCreated, etc.
                 ),
               ),
             ],

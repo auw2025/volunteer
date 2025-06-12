@@ -35,7 +35,7 @@ class HomeScreen extends StatelessWidget {
               Container(
                 height: 140, // increased height to account for the text below the logo
                 margin: const EdgeInsets.fromLTRB(16, 8, 0, 8),
-                child: StreamBuilder(
+                child: StreamBuilder<QuerySnapshot>(
                   stream: data.collection("community").snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
@@ -45,9 +45,9 @@ class HomeScreen extends StatelessWidget {
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (context, index) {
                           Map<String, dynamic> mapdata =
-                              snapshot.data!.docs[index].data();
-                              
-                          // Use null-aware operators providing defaults if fields are null.
+                              snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                          
+                          // Use null-aware operators, providing defaults if fields are null.
                           String logoUrl = mapdata['logo'] ?? 'https://via.placeholder.com/100';
                           String nickname = mapdata['nickname'] ?? 'No Nickname';
                           String bannerUrl = mapdata['banner'] ?? '';
@@ -57,6 +57,11 @@ class HomeScreen extends StatelessWidget {
                           String description = mapdata['description'] ?? '';
                           String website = mapdata['website'] ?? '';
                           String donation = mapdata['donation'] ?? '';
+
+                          // Ensure latlng exists and is a GeoPoint, otherwise provide a default value.
+                          GeoPoint latlng = mapdata['latlng'] is GeoPoint
+                              ? mapdata['latlng'] as GeoPoint
+                              : const GeoPoint(22.302711, 114.177216);
 
                           return Padding(
                             padding: const EdgeInsets.only(right: 8),
@@ -75,6 +80,7 @@ class HomeScreen extends StatelessWidget {
                                       description: description,
                                       websiteUrl: website,
                                       donationUrl: donation,
+                                      latlng: latlng,
                                     ),
                                   ),
                                 ),
@@ -165,7 +171,7 @@ class HomeScreen extends StatelessWidget {
                 child: MediaQuery.removePadding(
                   context: context,
                   removeTop: true,
-                  child: StreamBuilder(
+                  child: StreamBuilder<QuerySnapshot>(
                     stream: data.collection("volunteer").snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
@@ -174,8 +180,7 @@ class HomeScreen extends StatelessWidget {
                           scrollDirection: Axis.vertical,
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> mapdata =
-                                snapshot.data!.docs[index].data();
+                            Map<String, dynamic> mapdata = snapshot.data!.docs[index].data() as Map<String, dynamic>;
                             return volunteerCard(
                               image: mapdata['logo'] ?? 'https://via.placeholder.com/100',
                               location: mapdata['location'] ?? 'No location',
