@@ -62,7 +62,6 @@ class _OrgScreenState extends State<OrgScreen> {
                   width: size.width,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       SizedBox(height: size.height * 0.15),
                       Container(
@@ -98,7 +97,6 @@ class _OrgScreenState extends State<OrgScreen> {
                       Container(
                         margin: const EdgeInsets.only(left: 20, top: 10),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Row(
                               children: [
@@ -235,66 +233,7 @@ class _OrgScreenState extends State<OrgScreen> {
                   ],
                 ),
               ),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.only(left: 20, top: 20),
-                child: Text(
-                  'Other Organizations',
-                  style: GoogleFonts.inter(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.w400,
-                  ),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Container(
-                height: 115,
-                margin: const EdgeInsets.fromLTRB(20, 8, 0, 8),
-                child: StreamBuilder(
-                  stream: firestore.collection("community").snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      // Filter out the current organization from the list.
-                      List<DocumentSnapshot> docs = snapshot.data!.docs.where((doc) {
-                        Map<String, dynamic> group =
-                            doc.data() as Map<String, dynamic>;
-                        return group['name'] != widget.name;
-                      }).toList();
-                      
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        scrollDirection: Axis.horizontal,
-                        itemCount: docs.length,
-                        itemBuilder: (context, index) {
-                          Map<String, dynamic> group =
-                              docs[index].data() as Map<String, dynamic>;
-                          return orgCard(
-                            NetworkImage(group['logo']),
-                            () => Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OrgScreen(
-                                  banner: NetworkImage(group['banner']),
-                                  image: NetworkImage(group['logo']),
-                                  name: group['name'],
-                                  location: group['location'],
-                                  contact: group['contact'],
-                                  description: group['description'],
-                                  websiteUrl: group['website'],
-                                  donationUrl: group['donation'],
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    } else {
-                      return Container();
-                    }
-                  },
-                ),
-              ),
+              // Removed the "Other Organizations" section.
             ],
           ),
         ],
