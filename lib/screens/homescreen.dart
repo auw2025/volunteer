@@ -180,7 +180,8 @@ class HomeScreen extends StatelessWidget {
                           scrollDirection: Axis.vertical,
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (context, index) {
-                            Map<String, dynamic> mapdata = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                            Map<String, dynamic> mapdata =
+                                snapshot.data!.docs[index].data() as Map<String, dynamic>;
                             return volunteerCard(
                               image: mapdata['logo'] ?? 'https://via.placeholder.com/100',
                               location: mapdata['location'] ?? 'No location',
@@ -191,6 +192,7 @@ class HomeScreen extends StatelessWidget {
                               banner: mapdata['banner'] ?? '',
                               donation: mapdata['donation'] ?? '',
                               website: mapdata['website'] ?? '',
+                              relatedOrg: mapdata['related_org'] ?? 'Unknown',
                             );
                           },
                         );

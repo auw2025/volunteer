@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hapii/screens/volunteerscreen.dart'; // Update path if needed
-import 'package:hapii/services/const.dart';          // Update path if needed
-import 'package:hapii/widgets/bottomNavBar.dart';    // Update path if needed
+import 'package:hapii/services/const.dart'; // Update path if needed
+import 'package:hapii/widgets/bottomNavBar.dart'; // Update path if needed
 import 'package:unicons/unicons.dart';
 
 /// A card widget that displays volunteer post details.
-/// If [isApplied] is `true`, the “Apply to Volunteer” button is replaced/hidden.
+/// If [isApplied] is true, the “Apply to Volunteer” button is replaced/hidden.
 class volunteerCard extends StatelessWidget {
   final String location;
   final String donation;
@@ -17,6 +17,7 @@ class volunteerCard extends StatelessWidget {
   final String banner;
   final String date;
   final String orgDescription;
+  final String relatedOrg;
   final String image;
   final String contact;
   final bool isApplied;
@@ -31,6 +32,7 @@ class volunteerCard extends StatelessWidget {
     required this.location,
     required this.date,
     required this.orgDescription,
+    required this.relatedOrg,
     required this.website,
     this.isApplied = false,
   });
@@ -105,7 +107,7 @@ class volunteerCard extends StatelessWidget {
             ],
           ),
 
-          // Middle row with image + description
+          // Middle row with image + description (bold & larger relatedOrg, no underline)
           Container(
             margin: const EdgeInsets.only(top: 12, bottom: 12),
             child: Row(
@@ -126,10 +128,27 @@ class volunteerCard extends StatelessWidget {
                 SizedBox(
                   height: 75,
                   width: size.width * 0.6,
-                  child: Text(
-                    orgDescription,
-                    style: GoogleFonts.inter(
-                      fontSize: 12,
+                  child: RichText(
+                    text: TextSpan(
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: Colors.black,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: relatedOrg,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const TextSpan(
+                          text: ': ',
+                        ),
+                        TextSpan(
+                          text: orgDescription,
+                        ),
+                      ],
                     ),
                   ),
                 ),

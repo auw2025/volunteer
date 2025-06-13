@@ -264,6 +264,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               contact: volunteerDetails?['contact'] ?? '',
                               donation: volunteerDetails?['donation'] ?? '',
                               website: volunteerDetails?['website'] ?? '',
+                              relatedOrg: volunteerDetails?['related_org'] ?? 'Unknown Organization',
                             );
                           },
                         );
