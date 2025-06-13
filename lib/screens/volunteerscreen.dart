@@ -338,7 +338,7 @@ class _volunteerScreenState extends State<volunteerScreen> {
 
           // "Apply Now" / "Applied" button
           GestureDetector(
-            onTap: apply ? _applyNow : null, 
+            onTap: apply ? _applyNow : null,
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
               height: 55,
@@ -395,40 +395,65 @@ class _volunteerScreenState extends State<volunteerScreen> {
             ),
           ),
 
-          // You can uncomment this section if you need to show the appliedvolunteer list inside
-          // the volunteer screen. Or remove it if you do not need it.
-          /*
-          FutureBuilder<QuerySnapshot>(
-            future: FirebaseFirestore.instance
-                .collection('volunteer')
-                .doc(widget.name)
-                .collection('appliedvolunteer')
-                .get(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return Container();
-              final docs = snapshot.data!.docs;
-
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: docs.length,
-                itemBuilder: (context, index) {
-                  final mapdata = docs[index].data() as Map<String, dynamic>;
-                  // Display the data of each user who has applied
-                  return ListTile(
-                    title: Text(mapdata['name'] ?? 'Anonymous'),
-                    subtitle: Text(mapdata['gmail'] ?? 'No email'),
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(mapdata['photo'] ?? ''),
-                    ),
-                  );
-                },
-              );
-            },
+          // Additional information in point form
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Why Volunteer?",
+                  style: GoogleFonts.inter(
+                    color: Colors.black,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                const BulletItem(
+                    text: "Learn new skills and enhance your resume."),
+                const BulletItem(
+                    text:
+                        "Make meaningful connections in your community."),
+                const BulletItem(
+                    text:
+                        "Support local causes and create lasting impact."),
+                const BulletItem(
+                    text:
+                        "Enjoy a variety of flexible volunteering opportunities."),
+              ],
+            ),
           ),
-          */
 
           const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+}
+
+/// A simple widget for displaying a bullet point item.
+class BulletItem extends StatelessWidget {
+  final String text;
+  const BulletItem({Key? key, required this.text}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 6.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "• ",
+            style: GoogleFonts.inter(fontSize: 20, color: Colors.black),
+          ),
+          Expanded(
+            child: Text(
+              text,
+              style: GoogleFonts.inter(fontSize: 16, color: Colors.black),
+            ),
+          ),
         ],
       ),
     );

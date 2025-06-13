@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
               Container(
                 margin: const EdgeInsets.only(left: 8, right: 8, top: 8),
                 child: Text(
-                  "Featured organizations",
+                  "Highlighted Organizations",
                   style: GoogleFonts.inter(
                     color: Colors.black,
                     fontSize: 24,
